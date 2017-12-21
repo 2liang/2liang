@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="茅坡村的程序狗" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="继上次因为需要写了那个批量向压缩包文件该脚本现在支持三种重命名方式：中添加指定文件的Python脚本后，因脚本存在BUG，即当压缩包文件名中出现空格，则脚本会在同文件夹下创建以压缩包文件名空格前字符为新文件名的压缩包，并将指定文件添加到该压缩包程序中。之后也一直想找到可以修复该BUG的方法，无果。而且当时说了可以配合批量重命名工具进行使用，可以解决这个问题，所以今天送上Python脚本：对文件进行">
+<meta name="keywords" content="Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python脚本：对文件进行批量重命名">
+<meta property="og:url" content="http://yoursite.com/2014/04/12/python-file-batch-rename/index.html">
+<meta property="og:site_name" content="茅坡村的程序狗">
+<meta property="og:description" content="继上次因为需要写了那个批量向压缩包文件该脚本现在支持三种重命名方式：中添加指定文件的Python脚本后，因脚本存在BUG，即当压缩包文件名中出现空格，则脚本会在同文件夹下创建以压缩包文件名空格前字符为新文件名的压缩包，并将指定文件添加到该压缩包程序中。之后也一直想找到可以修复该BUG的方法，无果。而且当时说了可以配合批量重命名工具进行使用，可以解决这个问题，所以今天送上Python脚本：对文件进行">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-21T07:20:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python脚本：对文件进行批量重命名">
+<meta name="twitter:description" content="继上次因为需要写了那个批量向压缩包文件该脚本现在支持三种重命名方式：中添加指定文件的Python脚本后，因脚本存在BUG，即当压缩包文件名中出现空格，则脚本会在同文件夹下创建以压缩包文件名空格前字符为新文件名的压缩包，并将指定文件添加到该压缩包程序中。之后也一直想找到可以修复该BUG的方法，无果。而且当时说了可以配合批量重命名工具进行使用，可以解决这个问题，所以今天送上Python脚本：对文件进行">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2014/04/12/python-file-batch-rename/"/>
+
+
+
+
+
+  <title>Python脚本：对文件进行批量重命名 | 茅坡村的程序狗</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">茅坡村的程序狗</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2014/04/12/python-file-batch-rename/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="我才是二亮">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://7xkyde.com1.z0.glb.clouddn.com/img.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="茅坡村的程序狗">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python脚本：对文件进行批量重命名</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-04-12T15:21:25+08:00">
+                2014-04-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2014/04/12/python-file-batch-rename/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2014/04/12/python-file-batch-rename/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2014/04/12/python-file-batch-rename/" class="leancloud_visitors" data-flag-title="Python脚本：对文件进行批量重命名">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>继上次因为需要写了那个批量向压缩包文件该脚本现在支持三种重命名方式：中添加指定文件的Python脚本后，因脚本存在BUG，即当压缩包文件名中出现空格，则脚本会在同文件夹下创建以压缩包文件名空格前字符为新文件名的压缩包，并将指定文件添加到该压缩包程序中。之后也一直想找到可以修复该BUG的方法，无果。而且当时说了可以配合批量重命名工具进行使用，可以解决这个问题，所以今天送上Python脚本：对文件进行批量重命名。</p>
+<ul>
+<li>字符替换：批量对文件名中指定字符进行替换</li>
+<li>添加前缀：批量向原文件名添加前缀</li>
+<li>添加后缀：批量向原文件名添加后缀</li>
+<li><a id="more"></a>
+<div>
+
+</div></li>
+</ul>
+<p>该脚本原理很简单（小菜一个，大牛轻喷），所使用的均是Python最基础的一些函数或者模块。下面先把代码给大家附上，然后再做介绍：</p>
+<p><pre class="lang:python decode:true " title="Python脚本：对文件进行批量重命名">#-<em>-coding:gbk-</em>-</pre></p>
+<h1 id="By-www-5219-me"><a href="#By-www-5219-me" class="headerlink" title="By:www.5219.me"></a>By:www.5219.me</h1><h1 id="QQ-29474854"><a href="#QQ-29474854" class="headerlink" title="QQ:29474854"></a>QQ:29474854</h1><p>import os</p>
+<p>def Rename_CharReplace():</p>
+<pre><code>#对文件名中某字符进行替换(已完结)
+re_dir = os.getcwd()
+re_list = os.listdir(re_dir)
+original_char = input(&apos;请输入你要替换的字符：&apos;)
+replace_char = input(&apos;请输入替换内容：&apos;)
+num = 0
+for old_name in re_list:
+    split = os.path.splitext(old_name)
+    if not split[1] == &apos;.py&apos;:
+        if old_name.find(original_char) &amp;amp;gt;= 0:
+            new_name = old_name.replace(original_char, replace_char)
+            if not os.rename(old_name, new_name):
+                print(&apos;文件%s已成功重命名为%s\n&apos; % (old_name, new_name))
+                num += 1
+            else:
+                print(&apos;警告：文件%s未能成功重命名\n&apos; % old_name)           
+print(&apos;\n共成功重命名%d个文件&apos; % num)
+print(&apos;-----------------------------------------------&apos;)
+</code></pre><p>def Rename_AddPrefix():</p>
+<pre><code>#向文件名中添加前缀（已完结）
+re_dir = os.getcwd()
+re_list = os.listdir(re_dir)
+add_prefix = input(&apos;请输入您要添加的前缀:&apos;)
+num = 0
+for old_name in re_list:
+    split = os.path.splitext(old_name)
+    if not split[1] == &apos;.py&apos;:
+        new_name = add_prefix + old_name
+        if not os.rename(old_name, new_name):
+            print(&apos;文件%s已成功重命名为%s\n&apos; % (old_name, new_name))
+            num += 1
+        else:
+            print(&apos;警告：文件%s未能成功重命名\n&apos; % old_name)
+print(&apos;\n已成功重命名%d个文件&apos; % num)
+print(&apos;-----------------------------------------------&apos;)
+</code></pre><p>def Rename_AddSuffix():</p>
+<pre><code>#向文件中添加后缀（已完结）
+re_dir = os.getcwd()
+re_list = os.listdir(re_dir)
+add_suffix = input(&apos;请输入您要添加的后缀:&apos;)
+num = 0
+for old_name in re_list:
+    split = os.path.splitext(old_name)
+    if not split[1] == &apos;.py&apos;:
+        new_name = split[0] + add_suffix + split[1]
+        if not os.rename(old_name, new_name):
+            print(&apos;文件%s已成功重命名为%s\n&apos; % (old_name, new_name))
+            num += 1
+        else:
+            print(&apos;警告：文件%s未能成功重命名\n&apos; % old_name)
+print(&apos;\n共成功重命名%d个文件&apos; % num)
+print(&apos;-----------------------------------------------&apos;)
+</code></pre><p>#主程序<br>print(‘———————————————–’)<br>print(‘欢迎使用unstring文件批量重命名工具’)<br>print(‘QQ:29474854’)<br>print(‘本程序可实现三种方式的重命名:①替换文件名中的指定字符’)<br>print(‘                         ②为文件添加指定前缀’)<br>print(‘                         ③为文件添加指定后缀’)<br>print(‘———————————————–’)</p>
+<p>while True:<br>    choice = input(‘请选择你的命名方式（数字1,2,3即可,q退出）：’)<br>    if choice == ‘1’:<br>        Rename_CharReplace()<br>    elif choice == ‘2’:<br>        Rename_AddPrefix()<br>    elif choice == ‘3’:<br>        Rename_AddSuffix()<br>    elif choice == ‘q’:<br>        break<br>    else:<br>        print(‘请选择正确的命名方式：’)<br>以上就是该脚本代码，该脚本是使用Python3.x版本写的，对其中使用的模块以及函数进行简单的解释：</p>
+<ul>
+<li>os.getcwd()是获取该脚本所在文件夹路径；</li>
+<li>os.listdir(“path”)是将路径“path”目录下所有文件以及子目录列出来并返回列表；</li>
+<li>os.path.splitext(“filepath”)是将文件路径及文件名和文件后缀进行分割并返回列表，其中1号元素为文件后缀。</li>
+<li>replace(old,new)将new字符串与old字符串进行替换</li>
+<li>Os.rename()对文件进行重命名<br>需要的函数什么的基本上介绍完了，其实只要了解了这几个函数再加上一点Pyhon的语法基础就可以写出这个脚本了，技术含量略低。从开始学Python这门语言开始就很喜欢这家伙，以前学C语言的时候，从来没有欲望去用C语言实现一些平时简单的需求，但是学了Python后这方面的欲望膨胀啊，虽然好多还不能实现，但是慢慢学习，总该有能实现的时候吧！！也欢迎各位Python爱好者来访交流，也欢迎各位大牛批评指导。</li>
+</ul>
+<p></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>Donate comment here</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpg" alt="我才是二亮 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt="我才是二亮 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+      <div id="bitcoin" style="display: inline-block">
+        <img id="bitcoin_qr" src="/images/bitcoin.png" alt="我才是二亮 比特币"/>
+        <p>比特币</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/04/12/python-append-file-to-zip/" rel="next" title="Python脚本：批量向压缩包中任意文件夹添加文件">
+                <i class="fa fa-chevron-left"></i> Python脚本：批量向压缩包中任意文件夹添加文件
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/05/15/hacker-note/" rel="prev" title="记一次黑客丛林之旅--题解">
+                记一次黑客丛林之旅--题解 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div class="ds-thread" data-thread-key="2014/04/12/python-file-batch-rename/"
+           data-title="Python脚本：对文件进行批量重命名" data-url="http://yoursite.com/2014/04/12/python-file-batch-rename/">
+      </div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://7xkyde.com1.z0.glb.clouddn.com/img.png"
+                alt="我才是二亮" />
+            
+              <p class="site-author-name" itemprop="name">我才是二亮</p>
+              <p class="site-description motion-element" itemprop="description">茅坡村蹿出的程序狗，爱撸码，爱读书。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/unstring" target="_blank" title="微博">
+                    
+                      <i class="fa fa-fw fa-globe"></i>微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.douban.com/people/102437430/" target="_blank" title="豆瓣">
+                    
+                      <i class="fa fa-fw fa-globe"></i>豆瓣</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/2liang" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#By-www-5219-me"><span class="nav-number">1.</span> <span class="nav-text">By:www.5219.me</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#QQ-29474854"><span class="nav-number">2.</span> <span class="nav-text">QQ:29474854</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我才是二亮</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"2liang"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("GUmazrXSU5LNyVXhXXlliccO-gzGzoHsz", "mo9dVl6hs73TalGEYwoLzeQM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
