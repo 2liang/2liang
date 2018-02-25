@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="ethereum,solidity," />
+  <meta name="keywords" content="blockchain," />
 
 
 
@@ -81,18 +81,18 @@
 
 
 
-<meta name="description" content="以太坊智能合约开发：让合约接受转账在以太坊智能合约开发中，通常会有向合约地址进行转账的需求，那么有几种向合约地址进行转账的方式呢？ 有三种方式：  部署合约时转账 调用合约提供的方法 直接向合约地址进行转账  但有一个问题，以太坊的智能合约默认是拒绝来自任何地址的转账，那么如何让合约能够支持接收转账呢？ 1、部署转账在进行合约开发时，如果想要在部署时，直接向该合约进行转账，只需要给构造函数中添加p">
-<meta name="keywords" content="ethereum,solidity">
+<meta name="description" content="最近各种项目的代币空投层出不穷，有手工打币空投的，也有向代币合约转账0eth进行空投的，但是最近出现了一些无需转账，只需要将代币合约地址添加到imtoken中去，就可以实现空投，很多朋友不理解这里面的原理，觉得什么事情也没做，怎么就能够定点空投到我的地址中呢？下面我就来详细解释下如何实现imtoken添加即空投代币的方法。 ERC-20代币采用以太坊创建的ERC-20代币，指的是遵循ERC-20标">
+<meta name="keywords" content="blockchain">
 <meta property="og:type" content="article">
-<meta property="og:title" content="以太坊智能合约开发：让合约接受转账">
-<meta property="og:url" content="http://yoursite.com/2017/12/10/ethereum-solidity-acceptance-of-transfer-md/index.html">
+<meta property="og:title" content="教你分分钟实现imtoken添加即空投代币">
+<meta property="og:url" content="http://yoursite.com/2018/02/25/erc-20-add-wallet-airdrop-md/index.html">
 <meta property="og:site_name" content="茅坡村的程序狗">
-<meta property="og:description" content="以太坊智能合约开发：让合约接受转账在以太坊智能合约开发中，通常会有向合约地址进行转账的需求，那么有几种向合约地址进行转账的方式呢？ 有三种方式：  部署合约时转账 调用合约提供的方法 直接向合约地址进行转账  但有一个问题，以太坊的智能合约默认是拒绝来自任何地址的转账，那么如何让合约能够支持接收转账呢？ 1、部署转账在进行合约开发时，如果想要在部署时，直接向该合约进行转账，只需要给构造函数中添加p">
+<meta property="og:description" content="最近各种项目的代币空投层出不穷，有手工打币空投的，也有向代币合约转账0eth进行空投的，但是最近出现了一些无需转账，只需要将代币合约地址添加到imtoken中去，就可以实现空投，很多朋友不理解这里面的原理，觉得什么事情也没做，怎么就能够定点空投到我的地址中呢？下面我就来详细解释下如何实现imtoken添加即空投代币的方法。 ERC-20代币采用以太坊创建的ERC-20代币，指的是遵循ERC-20标">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-22T02:57:54.000Z">
+<meta property="og:updated_time" content="2018-02-25T14:08:06.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="以太坊智能合约开发：让合约接受转账">
-<meta name="twitter:description" content="以太坊智能合约开发：让合约接受转账在以太坊智能合约开发中，通常会有向合约地址进行转账的需求，那么有几种向合约地址进行转账的方式呢？ 有三种方式：  部署合约时转账 调用合约提供的方法 直接向合约地址进行转账  但有一个问题，以太坊的智能合约默认是拒绝来自任何地址的转账，那么如何让合约能够支持接收转账呢？ 1、部署转账在进行合约开发时，如果想要在部署时，直接向该合约进行转账，只需要给构造函数中添加p">
+<meta name="twitter:title" content="教你分分钟实现imtoken添加即空投代币">
+<meta name="twitter:description" content="最近各种项目的代币空投层出不穷，有手工打币空投的，也有向代币合约转账0eth进行空投的，但是最近出现了一些无需转账，只需要将代币合约地址添加到imtoken中去，就可以实现空投，很多朋友不理解这里面的原理，觉得什么事情也没做，怎么就能够定点空投到我的地址中呢？下面我就来详细解释下如何实现imtoken添加即空投代币的方法。 ERC-20代币采用以太坊创建的ERC-20代币，指的是遵循ERC-20标">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/12/10/ethereum-solidity-acceptance-of-transfer-md/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/02/25/erc-20-add-wallet-airdrop-md/"/>
 
 
 
 
 
-  <title>以太坊智能合约开发：让合约接受转账 | 茅坡村的程序狗</title>
+  <title>教你分分钟实现imtoken添加即空投代币 | 茅坡村的程序狗</title>
   
 
 
@@ -265,7 +265,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/10/ethereum-solidity-acceptance-of-transfer-md/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/25/erc-20-add-wallet-airdrop-md/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="我才是二亮">
@@ -282,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">以太坊智能合约开发：让合约接受转账</h1>
+          <h1 class="post-title" itemprop="name headline">教你分分钟实现imtoken添加即空投代币</h1>
         
 
         <div class="post-meta">
@@ -294,8 +294,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-10T19:41:18+08:00">
-                2017-12-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-25T22:07:19+08:00">
+                2018-02-25
               </time>
             
 
@@ -335,8 +335,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2017/12/10/ethereum-solidity-acceptance-of-transfer-md/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/12/10/ethereum-solidity-acceptance-of-transfer-md/" itemprop="commentCount"></span>
+                <a href="/2018/02/25/erc-20-add-wallet-airdrop-md/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/02/25/erc-20-add-wallet-airdrop-md/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -344,7 +344,7 @@
 
           
           
-             <span id="/2017/12/10/ethereum-solidity-acceptance-of-transfer-md/" class="leancloud_visitors" data-flag-title="以太坊智能合约开发：让合约接受转账">
+             <span id="/2018/02/25/erc-20-add-wallet-airdrop-md/" class="leancloud_visitors" data-flag-title="教你分分钟实现imtoken添加即空投代币">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -375,24 +375,56 @@
       
 
       
-        <h1 id="以太坊智能合约开发：让合约接受转账"><a href="#以太坊智能合约开发：让合约接受转账" class="headerlink" title="以太坊智能合约开发：让合约接受转账"></a>以太坊智能合约开发：让合约接受转账</h1><p>在以太坊智能合约开发中，通常会有向合约地址进行转账的需求，那么有几种向合约地址进行转账的方式呢？</p>
-<p>有三种方式：</p>
-<ul>
-<li>部署合约时转账</li>
-<li>调用合约提供的方法</li>
-<li>直接向合约地址进行转账</li>
-</ul>
-<p>但有一个问题，以太坊的智能合约默认是拒绝来自任何地址的转账，那么如何让合约能够支持接收转账呢？</p>
-<h3 id="1、部署转账"><a href="#1、部署转账" class="headerlink" title="1、部署转账"></a>1、部署转账</h3><p>在进行合约开发时，如果想要在部署时，直接向该合约进行转账，只需要给构造函数中添加<code>payable</code>修饰符。</p>
-<h4 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">contract Test &#123;</span><br><span class="line">    </span><br><span class="line">  	<span class="comment">// 构造函数添加payable修饰符即可</span></span><br><span class="line">  	<span class="function"><span class="keyword">function</span> <span class="title">Test</span>(<span class="params"></span>) <span class="title">payable</span> </span>&#123;</span><br><span class="line">    	<span class="comment">// 构造函数其他逻辑代码  </span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="2、执行合约转账"><a href="#2、执行合约转账" class="headerlink" title="2、执行合约转账"></a>2、执行合约转账</h3><p>执行合约转账，则需要给你需要支持转账功能的方法添加<code>payable</code>修饰符</p>
-<h4 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">contract Test &#123;</span><br><span class="line">    </span><br><span class="line">  	<span class="function"><span class="keyword">function</span> <span class="title">getBalance</span>(<span class="params"></span>) <span class="title">payable</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 其他逻辑</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3、直接转账"><a href="#3、直接转账" class="headerlink" title="3、直接转账"></a>3、直接转账</h3><p>支持直接转账，需要借助后备函数(fallback function)，只需要为后备函数添加 <code>payable</code> 修饰符</p>
-<h4 id="示例：-2"><a href="#示例：-2" class="headerlink" title="示例："></a>示例：</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">contract Test &#123;</span><br><span class="line">    </span><br><span class="line">  	<span class="function"><span class="keyword">function</span> (<span class="params"></span>) <span class="title">payable</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 其他逻辑</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><ul>
-<li><a href="http://www.tryblockchain.org/Solidity-FunctionModifiers-%E5%87%BD%E6%95%B0%E4%BF%AE%E6%94%B9%E5%99%A8.html" target="_blank" rel="noopener">函数修饰符(Function Modifiers)</a></li>
-<li><a href="http://solidity.readthedocs.io/en/latest/miscellaneous.html?highlight=miscellaneous#modifiers" target="_blank" rel="noopener">内部修饰符</a></li>
-</ul>
+        <p>最近各种项目的代币空投层出不穷，有手工打币空投的，也有向代币合约转账0eth进行空投的，但是最近出现了一些无需转账，只需要将代币合约地址添加到imtoken中去，就可以实现空投，很多朋友不理解这里面的原理，觉得什么事情也没做，怎么就能够定点空投到我的地址中呢？下面我就来详细解释下如何实现imtoken添加即空投代币的方法。</p>
+<h3 id="ERC-20代币"><a href="#ERC-20代币" class="headerlink" title="ERC-20代币"></a>ERC-20代币</h3><p>采用以太坊创建的ERC-20代币，指的是遵循ERC-20标准的代币，该标准指出，在代币合约中需要实现以下方法：</p>
+<h5 id="balances"><a href="#balances" class="headerlink" title="balances"></a>balances</h5><blockquote>
+<p>余额变量，该变量里面存储了所有拥有代币的地址的余额</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mapping(<span class="function"><span class="params">address</span> =&gt;</span> uint) balances;</span><br></pre></td></tr></table></figure>
+<h5 id="balanceOf"><a href="#balanceOf" class="headerlink" title="balanceOf()"></a>balanceOf()</h5><blockquote>
+<p>返回指定地址的账户余额</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// balanceOf方法原型</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">balanceOf</span>(<span class="params">address _owner</span>) <span class="title">constant</span> <span class="title">returns</span> (<span class="params">uint256 balance</span>)</span></span><br></pre></td></tr></table></figure>
+<h5 id="transfer"><a href="#transfer" class="headerlink" title="transfer()"></a>transfer()</h5><blockquote>
+<p>转移 <code>_value</code> 数量的token到地址 <code>_to</code></p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// transfer方法原型</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">transfer</span>(<span class="params">address _to, uint256 _value</span>) <span class="title">returns</span> (<span class="params">bool success</span>)</span></span><br></pre></td></tr></table></figure>
+<h5 id="transferFrom"><a href="#transferFrom" class="headerlink" title="transferFrom()"></a>transferFrom()</h5><blockquote>
+<p>从地址<code>_from</code>发送数量为<code>_value</code>的token到地址<code>_to</code></p>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// transferFrom方法原型</span><br><span class="line">function transferFrom(address _from, address _to, uint256 _value) returns (bool success)</span><br></pre></td></tr></table></figure>
+<p>关于ERC-20的代币标准中索要实现的方法，我仅仅提出这几个，并不是所有，具体可以看附录里面的链接。</p>
+<h3 id="如何实现添加即空投？"><a href="#如何实现添加即空投？" class="headerlink" title="如何实现添加即空投？"></a>如何实现添加即空投？</h3><p>当在钱包中添加一个代币的合约时，钱包首先需要获取当前地址在该代币合约中的余额，关键来了，当你需要获取你的地址在该代币合约中的余额时，其实是调用了代币合约的 <code>balanceOf()</code> 方法，也就是虽然你在添加代币合约的时候，以为没有跟代币合约进行任何交互，实质上钱包已经跟代币合约进行了交互。那么想要实现空投，只需要在<code>balanceOf()</code>方法里面实现一个空投的方法。</p>
+<p>首先看一下，zeppelin的代币最佳实践里面的<code>balanceOf()</code> 方法：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">balanceOf</span>(<span class="params">address _owner</span>) <span class="title">public</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">uint256 balance</span>) </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> balances[_owner];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>基础的方法仅从 <code>balances</code> 变量中获取你当前地址的余额。</p>
+<p>如果想要实现空投，可以这样：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">uint totalSupply = <span class="number">100000000</span> ether; <span class="comment">// 总发行量</span></span><br><span class="line">uint currentTotalSupply = <span class="number">0</span>;	<span class="comment">// 已经空投数量</span></span><br><span class="line">uint airdropNum = <span class="number">1</span> ether;		<span class="comment">// 单个账户空投数量</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">balanceOf</span>(<span class="params">address _owner</span>) <span class="title">public</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">uint256 balance</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 添加这个方法，当余额为0的时候直接空投</span></span><br><span class="line">    <span class="keyword">if</span> (balances[_owner] == <span class="number">0</span> &amp;&amp; currentTotalSupply &lt; totalSupply) &#123;</span><br><span class="line">        currentTotalSupply += airdropNum;</span><br><span class="line">        balances[_owner] += airdropNum;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">return</span> balances[_owner];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可能你会说这样，我只需要将我地址里面的余额全部转出去，那么我又可以调用合约的<code>balanceOf()</code>方法进行空投，如果我想实现给每个地址仅空投一次，应该如何操作呢？</p>
+<p>我们来新建一个变量：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">uint totalSupply = <span class="number">100000000</span> ether; <span class="comment">// 总发行量</span></span><br><span class="line">uint currentTotalSupply = <span class="number">0</span>;	<span class="comment">// 已经空投数量</span></span><br><span class="line">uint airdropNum = <span class="number">1</span> ether;		<span class="comment">// 单个账户空投数量</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 存储是否空投过</span></span><br><span class="line">mapping(<span class="function"><span class="params">address</span> =&gt;</span> bool) touched;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 修改后的balanceOf方法</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">balanceOf</span>(<span class="params">address _owner</span>) <span class="title">public</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">uint256 balance</span>) </span>&#123;</span><br><span class="line">    <span class="comment">// 添加这个方法，当余额为0的时候直接空投</span></span><br><span class="line">    <span class="keyword">if</span> (!touched[_owner] &amp;&amp; currentTotalSupply &lt; totalSupply) &#123;</span><br><span class="line">        touched[_owner] = <span class="literal">true</span>;</span><br><span class="line">        currentTotalSupply += airdropNum;</span><br><span class="line">        balances[_owner] += airdropNum;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">return</span> balances[_owner];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>修改之后，即可以进行添加即空投的实现。</p>
+<p>当然，上面的例子其实只是简易版的，我们也可以在任何一个被调用的方法里面去判断这个账户是否接受过空投，如果没有则直接为该账户进行空投。</p>
+<h3 id="空投福利"><a href="#空投福利" class="headerlink" title="空投福利"></a>空投福利</h3><p>分享几个已知的如此方式的空投合约，打开im钱包，点加号进去。复制黏贴合约地址，搜索点添加。币秒到，不需要以太手续费。</p>
+<p>1、ProChain (free 88,888.88枚)合约地址</p>
+<blockquote>
+<p>0x8377ee6d3545Bc6ff1425ee3015DC648B149C7B2</p>
+</blockquote>
+<p>2、Simoleon (10,000枚)合约地址</p>
+<blockquote>
+<p>0x86c8bF8532AA2601151c9DbbF4e4C4804e042571</p>
+</blockquote>
+<p>3、PNS (80081枚)合约地址</p>
+<blockquote>
+<p>0xce853db3359326db6d03981c9fb42983bbcdd007</p>
+</blockquote>
+<p>4、送Surprise (276枚)合约地址</p>
+<blockquote>
+<p>0xd9A72fEc8683db0666769D841d6D127F350B4418</p>
+</blockquote>
+<h3 id="附录："><a href="#附录：" class="headerlink" title="附录："></a>附录：</h3><p><a href="https://github.com/ethereum/EIPs/issues/20" target="_blank" rel="noopener">A. ERC-20代币标准</a></p>
+<p><a href="https://github.com/OpenZeppelin/zeppelin-solidity/tree/master/contracts/token/ERC20" target="_blank" rel="noopener">B. Zeppelin ERC-20代币合约最佳实践代码</a></p>
+<p><a href="https://etherscan.io/address/0xd9a72fec8683db0666769d841d6d127f350b4418#code" target="_blank" rel="noopener">C. Surprise空投合约源代码</a></p>
 
       
     </div>
@@ -410,9 +442,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/ethereum/" rel="tag"># ethereum</a>
-          
-            <a href="/tags/solidity/" rel="tag"># solidity</a>
+            <a href="/tags/blockchain/" rel="tag"># blockchain</a>
           
         </div>
       
@@ -425,8 +455,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/09/25/mysql-partition/" rel="next" title="学习笔记之MySQL分区">
-                <i class="fa fa-chevron-left"></i> 学习笔记之MySQL分区
+              <a href="/2017/12/17/blockchain-miner-witness/" rel="next" title="区块链基础原理：矿工与见证人的区别">
+                <i class="fa fa-chevron-left"></i> 区块链基础原理：矿工与见证人的区别
               </a>
             
           </div>
@@ -434,10 +464,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/12/12/ethereum-solidity-transfer-refund/" rel="prev" title="以太坊智能合约开发：实现转账退费">
-                以太坊智能合约开发：实现转账退费 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -467,8 +493,8 @@
           
   
     <div class="comments" id="comments">
-      <div class="ds-thread" data-thread-key="2017/12/10/ethereum-solidity-acceptance-of-transfer-md/"
-           data-title="以太坊智能合约开发：让合约接受转账" data-url="http://yoursite.com/2017/12/10/ethereum-solidity-acceptance-of-transfer-md/">
+      <div class="ds-thread" data-thread-key="2018/02/25/erc-20-add-wallet-airdrop-md/"
+           data-title="教你分分钟实现imtoken添加即空投代币" data-url="http://yoursite.com/2018/02/25/erc-20-add-wallet-airdrop-md/">
       </div>
     </div>
   
@@ -606,7 +632,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#以太坊智能合约开发：让合约接受转账"><span class="nav-number">1.</span> <span class="nav-text">以太坊智能合约开发：让合约接受转账</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、部署转账"><span class="nav-number">1.0.1.</span> <span class="nav-text">1、部署转账</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#示例："><span class="nav-number">1.0.1.1.</span> <span class="nav-text">示例：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、执行合约转账"><span class="nav-number">1.0.2.</span> <span class="nav-text">2、执行合约转账</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#示例：-1"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">示例：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、直接转账"><span class="nav-number">1.0.3.</span> <span class="nav-text">3、直接转账</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#示例：-2"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">示例：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#附录"><span class="nav-number">1.1.</span> <span class="nav-text">附录</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ERC-20代币"><span class="nav-number">1.</span> <span class="nav-text">ERC-20代币</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#balances"><span class="nav-number">1.0.1.</span> <span class="nav-text">balances</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#balanceOf"><span class="nav-number">1.0.2.</span> <span class="nav-text">balanceOf()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#transfer"><span class="nav-number">1.0.3.</span> <span class="nav-text">transfer()</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#transferFrom"><span class="nav-number">1.0.4.</span> <span class="nav-text">transferFrom()</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何实现添加即空投？"><span class="nav-number">2.</span> <span class="nav-text">如何实现添加即空投？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#空投福利"><span class="nav-number">3.</span> <span class="nav-text">空投福利</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#附录："><span class="nav-number">4.</span> <span class="nav-text">附录：</span></a></li></ol></div>
             
 
           </div>
