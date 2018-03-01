@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="茅坡村的程序狗">
 <meta property="og:description" content="最近各种项目的代币空投层出不穷，有手工打币空投的，也有向代币合约转账0eth进行空投的，但是最近出现了一些无需转账，只需要将代币合约地址添加到imtoken中去，就可以实现空投，很多朋友不理解这里面的原理，觉得什么事情也没做，怎么就能够定点空投到我的地址中呢？下面我就来详细解释下如何实现imtoken添加即空投代币的方法。 ERC-20代币采用以太坊创建的ERC-20代币，指的是遵循ERC-20标">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-25T14:08:06.000Z">
+<meta property="og:updated_time" content="2018-02-25T14:11:58.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="教你分分钟实现imtoken添加即空投代币">
 <meta name="twitter:description" content="最近各种项目的代币空投层出不穷，有手工打币空投的，也有向代币合约转账0eth进行空投的，但是最近出现了一些无需转账，只需要将代币合约地址添加到imtoken中去，就可以实现空投，很多朋友不理解这里面的原理，觉得什么事情也没做，怎么就能够定点空投到我的地址中呢？下面我就来详细解释下如何实现imtoken添加即空投代币的方法。 ERC-20代币采用以太坊创建的ERC-20代币，指的是遵循ERC-20标">
@@ -392,7 +392,7 @@
 <h5 id="transferFrom"><a href="#transferFrom" class="headerlink" title="transferFrom()"></a>transferFrom()</h5><blockquote>
 <p>从地址<code>_from</code>发送数量为<code>_value</code>的token到地址<code>_to</code></p>
 </blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// transferFrom方法原型</span><br><span class="line">function transferFrom(address _from, address _to, uint256 _value) returns (bool success)</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// transferFrom方法原型</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">transferFrom</span>(<span class="params">address _from, address _to, uint256 _value</span>) <span class="title">returns</span> (<span class="params">bool success</span>)</span></span><br></pre></td></tr></table></figure>
 <p>关于ERC-20的代币标准中索要实现的方法，我仅仅提出这几个，并不是所有，具体可以看附录里面的链接。</p>
 <h3 id="如何实现添加即空投？"><a href="#如何实现添加即空投？" class="headerlink" title="如何实现添加即空投？"></a>如何实现添加即空投？</h3><p>当在钱包中添加一个代币的合约时，钱包首先需要获取当前地址在该代币合约中的余额，关键来了，当你需要获取你的地址在该代币合约中的余额时，其实是调用了代币合约的 <code>balanceOf()</code> 方法，也就是虽然你在添加代币合约的时候，以为没有跟代币合约进行任何交互，实质上钱包已经跟代币合约进行了交互。那么想要实现空投，只需要在<code>balanceOf()</code>方法里面实现一个空投的方法。</p>
 <p>首先看一下，zeppelin的代币最佳实践里面的<code>balanceOf()</code> 方法：</p>
@@ -464,6 +464,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/01/bitcoin-utxo-ethereum-balance-md/" rel="prev" title="比特币和以太坊技术原理对比之账户模型">
+                比特币和以太坊技术原理对比之账户模型 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -548,7 +552,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
