@@ -89,13 +89,13 @@
 <meta property="og:site_name" content="茅坡村的程序狗">
 <meta property="og:description" content="比特币和以太坊技术原理对比之账户模型大多数初学区块链技术的朋友，都是从比特币和以太坊的技术原理来入手的。这两个项目有很多相同之处，但是他们在细节的实现上是有挺多的区别的，今天我们就来说说账户模型的区别。 0x00 如何正确表述两者的余额比特币和以太坊在实现余额的处理上，采用了不同的机制，比特币采用了UTXO未花费交易输出；而以太坊采用了维护账户状态机制。 在比特币中，其实并没有所谓的账户，只有比特">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="http://yoursite.com/2018/03/01/bitcoin-utxo-ethereum-balance-md/images/WechatIMG170.jpeg">
-<meta property="og:image" content="http://yoursite.com/2018/03/01/bitcoin-utxo-ethereum-balance-md/images/WechatIMG170.jpeg">
-<meta property="og:updated_time" content="2018-03-01T06:11:49.000Z">
+<meta property="og:image" content="http://blog.2liang.me/images/WechatIMG170.jpeg">
+<meta property="og:image" content="http://blog.2liang.me/images/WechatIMG170.jpeg">
+<meta property="og:updated_time" content="2018-03-01T06:17:04.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="比特币和以太坊技术原理对比之账户模型">
 <meta name="twitter:description" content="比特币和以太坊技术原理对比之账户模型大多数初学区块链技术的朋友，都是从比特币和以太坊的技术原理来入手的。这两个项目有很多相同之处，但是他们在细节的实现上是有挺多的区别的，今天我们就来说说账户模型的区别。 0x00 如何正确表述两者的余额比特币和以太坊在实现余额的处理上，采用了不同的机制，比特币采用了UTXO未花费交易输出；而以太坊采用了维护账户状态机制。 在比特币中，其实并没有所谓的账户，只有比特">
-<meta name="twitter:image" content="http://yoursite.com/2018/03/01/bitcoin-utxo-ethereum-balance-md/images/WechatIMG170.jpeg">
+<meta name="twitter:image" content="http://blog.2liang.me/images/WechatIMG170.jpeg">
 
 
 
@@ -392,7 +392,7 @@
 <p>总结之后：支付是交易输入，收款是未花费的交易输出。</p>
 <p>备注：在比特币中，每一笔UTXO都不可分割，必须在一次交易中，通过设置不同的输出将其拆分给不同的地址。</p>
 <p>下面给张图再展示下：</p>
-<p><img src="./images/WechatIMG170.jpeg" alt="WechatIMG170"></p>
+<p><img src="http://blog.2liang.me/images/WechatIMG170.jpeg" alt="WechatIMG170"></p>
 <p>(每次用软件画图都没有自己手画顺，凑活看，哈哈哈)</p>
 <h3 id="0x02-以太坊的账户模型"><a href="#0x02-以太坊的账户模型" class="headerlink" title="0x02 以太坊的账户模型"></a>0x02 以太坊的账户模型</h3><p>在以太坊中，其实账号模型是比较好理解的，因为以太坊的账户模型跟我们传统所理解的账户模型是一致的。在以太坊中，账户地址有两种，分别是：</p>
 <ul>
@@ -406,7 +406,7 @@
 <li>storageRoot：账户存储内容组成的默克尔树根的哈希值。</li>
 <li>codeHash：账户EVM代码的hash值。合约账户即为合约代码的哈希值，外部账户为空字符串的哈希值。</li>
 </ul>
-<p><img src="./images/WechatIMG170.jpeg" alt="WechatIMG171"></p>
+<p><img src="http://blog.2liang.me/images/WechatIMG170.jpeg" alt="WechatIMG171"></p>
 <h3 id="0x03-UTXO模型与账户模型的优缺点"><a href="#0x03-UTXO模型与账户模型的优缺点" class="headerlink" title="0x03 UTXO模型与账户模型的优缺点"></a>0x03 UTXO模型与账户模型的优缺点</h3><p>UTXO未花费交易模型被很多人认为是中本聪最牛逼的设计之一，那么它有什么优点呢？而以太坊没有选择沿用比特币的UTXO模型，而选择了账户模型，又是为什么呢？</p>
 <h4 id="UTXO优点"><a href="#UTXO优点" class="headerlink" title="UTXO优点"></a>UTXO优点</h4><ul>
 <li>私密性比较强，理论上可以为每一笔输出设置一个地址。</li>
