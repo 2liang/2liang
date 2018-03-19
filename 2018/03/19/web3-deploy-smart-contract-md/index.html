@@ -89,13 +89,13 @@
 <meta property="og:site_name" content="茅坡村的程序狗">
 <meta property="og:description" content="0x00 起始大多数人在初学智能合约开发的时候，都是选择使用remix进行合约的开发以及部署。remix是集Solidity的编辑器，编译器，部署于一身的集成开发工具，非常方便，也非常好用。之前一直使用Remix或者truffle，最近使用web3进行智能合约的部署，分享下。 0x01 准备工作在使用web3进行合约的部署，一般需要使用准备以下几个库： 1、 solcsolc 是以太坊官方出的一款">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://s14.postimg.org/tgbza3ngh/2018-03-12_11.25.47.png">
+<meta property="og:image" content="https://s14.postimg.org/6sxou8i9t/2018-03-19_2.18.23.png">
 <meta property="og:image" content="https://s14.postimg.org/788yn1ef5/qrcode_for_gh_0f12fe5ef5fd_258.jpg">
-<meta property="og:updated_time" content="2018-03-19T09:28:10.000Z">
+<meta property="og:updated_time" content="2018-03-19T09:38:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="如何使用web3部署智能合约？">
 <meta name="twitter:description" content="0x00 起始大多数人在初学智能合约开发的时候，都是选择使用remix进行合约的开发以及部署。remix是集Solidity的编辑器，编译器，部署于一身的集成开发工具，非常方便，也非常好用。之前一直使用Remix或者truffle，最近使用web3进行智能合约的部署，分享下。 0x01 准备工作在使用web3进行合约的部署，一般需要使用准备以下几个库： 1、 solcsolc 是以太坊官方出的一款">
-<meta name="twitter:image" content="https://s14.postimg.org/tgbza3ngh/2018-03-12_11.25.47.png">
+<meta name="twitter:image" content="https://s14.postimg.org/6sxou8i9t/2018-03-19_2.18.23.png">
 
 
 
@@ -397,7 +397,7 @@
 <p>其中的<code>http://localhost:8545</code>就是你自己的节点的地址，但是因为以太坊全节点的数据量越来越大导致同步一个全节点数据需要非常长的时间以及很大的硬盘容量，这对于普通用户是非常头疼的。</p>
 <p>目前有一些开放的提供全节点和测试网络节点的服务商，其实比较好用，可以避免自己去同步整个以太坊网络，而只需要专心去开发自己的应用即可，提供一个节点服务。多链科技旗下的多链节点就是提供这个服务的。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 多链节点</span><br><span class="line">https://node.duolian.io/</span><br></pre></td></tr></table></figure>
-<p><a href="https://postimg.org/image/se1srk4n1/" target="_blank" rel="noopener"><img src="https://s14.postimg.org/tgbza3ngh/2018-03-12_11.25.47.png" alt="2018-03-12_11.25.47.png"></a></p>
+<p><a href="https://postimg.org/image/r0b4mjfr1/" target="_blank" rel="noopener"><img src="https://s14.postimg.org/6sxou8i9t/2018-03-19_2.18.23.png" alt="2018-03-19_2.18.23.png"></a></p>
 <h5 id="使用MetaMask等浏览器插件"><a href="#使用MetaMask等浏览器插件" class="headerlink" title="- 使用MetaMask等浏览器插件"></a>- 使用MetaMask等浏览器插件</h5><p>MetaMask是一个以太坊钱包的浏览器插件，该插件提供自己的web3实例，当用户在浏览器中安装了MetaMask，MetaMask会自动注入一段js，然后将自己的web3实例注入到了浏览器中，所以可以直接使用该web3实例。代码如下：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">web3 = <span class="keyword">new</span> Web3(web3.currentProvider);</span><br></pre></td></tr></table></figure>
 <h5 id="注入web3代码"><a href="#注入web3代码" class="headerlink" title="注入web3代码"></a>注入web3代码</h5><p>当浏览器中已经拥有了web3实例，那么我们就直接使用已存在的实例，如果不存在，再去连接我们自己的web3实例。</p>
