@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ethereum,solidity," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="二话区块链" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="0x00 写在前面众所周知，以太坊在现阶段最大的应用就是代币发行，而在以太坊中有很多类型的代币，最著名的当属ERC20了，但是对于其他几种代币类型，可能还有一些朋友不知道，所以最近规划了一个系列，就是以太坊标准代币系列。 目前市面上，凡是基于以太坊的代币，在交易所上线交易的均是ERC20代币，那么今天我们就来聊聊ERC20代币的标准方案吧。 0x01 ERC20标准制定动机在基于以太坊发行代币时，">
+<meta name="keywords" content="ethereum,solidity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="以太坊标准代币系列之同质化代币ERC20">
+<meta property="og:url" content="http://yoursite.com/2018/03/26/ethereum-erc-20/index.html">
+<meta property="og:site_name" content="二话区块链">
+<meta property="og:description" content="0x00 写在前面众所周知，以太坊在现阶段最大的应用就是代币发行，而在以太坊中有很多类型的代币，最著名的当属ERC20了，但是对于其他几种代币类型，可能还有一些朋友不知道，所以最近规划了一个系列，就是以太坊标准代币系列。 目前市面上，凡是基于以太坊的代币，在交易所上线交易的均是ERC20代币，那么今天我们就来聊聊ERC20代币的标准方案吧。 0x01 ERC20标准制定动机在基于以太坊发行代币时，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s14.postimg.org/788yn1ef5/qrcode_for_gh_0f12fe5ef5fd_258.jpg">
+<meta property="og:updated_time" content="2018-03-26T12:32:19.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="以太坊标准代币系列之同质化代币ERC20">
+<meta name="twitter:description" content="0x00 写在前面众所周知，以太坊在现阶段最大的应用就是代币发行，而在以太坊中有很多类型的代币，最著名的当属ERC20了，但是对于其他几种代币类型，可能还有一些朋友不知道，所以最近规划了一个系列，就是以太坊标准代币系列。 目前市面上，凡是基于以太坊的代币，在交易所上线交易的均是ERC20代币，那么今天我们就来聊聊ERC20代币的标准方案吧。 0x01 ERC20标准制定动机在基于以太坊发行代币时，">
+<meta name="twitter:image" content="https://s14.postimg.org/788yn1ef5/qrcode_for_gh_0f12fe5ef5fd_258.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/26/ethereum-erc-20/"/>
+
+
+
+
+
+  <title>以太坊标准代币系列之同质化代币ERC20 | 二话区块链</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">二话区块链</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">区块链使我快乐</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/26/ethereum-erc-20/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="我才是二亮">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://7xkyde.com1.z0.glb.clouddn.com/img.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="二话区块链">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">以太坊标准代币系列之同质化代币ERC20</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-26T20:29:27+08:00">
+                2018-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/区块链/" itemprop="url" rel="index">
+                    <span itemprop="name">区块链</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/区块链/以太坊/" itemprop="url" rel="index">
+                    <span itemprop="name">以太坊</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/26/ethereum-erc-20/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/26/ethereum-erc-20/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/03/26/ethereum-erc-20/" class="leancloud_visitors" data-flag-title="以太坊标准代币系列之同质化代币ERC20">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="0x00-写在前面"><a href="#0x00-写在前面" class="headerlink" title="0x00 写在前面"></a>0x00 写在前面</h2><p>众所周知，以太坊在现阶段最大的应用就是代币发行，而在以太坊中有很多类型的代币，最著名的当属ERC20了，但是对于其他几种代币类型，可能还有一些朋友不知道，所以最近规划了一个系列，就是以太坊标准代币系列。</p>
+<p>目前市面上，凡是基于以太坊的代币，在交易所上线交易的均是ERC20代币，那么今天我们就来聊聊ERC20代币的标准方案吧。</p>
+<h2 id="0x01-ERC20标准制定动机"><a href="#0x01-ERC20标准制定动机" class="headerlink" title="0x01 ERC20标准制定动机"></a>0x01 ERC20标准制定动机</h2><p>在基于以太坊发行代币时，如果各个代币发行方都使用自有标准去发行代币，那对于钱包开发者以及交易所对接成本是极其高昂了，因为他们需要为每一种代币去独立进行对接，为了降低钱包开发者以及交易所的对接成本，以太坊社区制定了一个关于代币的发行标准。</p>
+<p>该标准中主要包含了，代币的转移，地址余额的获取等方法。</p>
+<h2 id="0x02-ERC20标准规范"><a href="#0x02-ERC20标准规范" class="headerlink" title="0x02 ERC20标准规范"></a>0x02 ERC20标准规范</h2><p>一个代币的合约，一般需要代币的发行量，每个地址的余额，代币的转移等方法， 而ERC20标准就是将这些最常用又是必不可少的方法，对此进行标准化，方便开发者进行代币合约的开发，也方便钱包开发者以及交易所对接成本降到最低。</p>
+<p>其中，定义了三类，方法、属性、事件。</p>
+<p>下面介绍这些标准方法：</p>
+<h3 id="A-方法-Method"><a href="#A-方法-Method" class="headerlink" title="A. 方法(Method)"></a>A. 方法(Method)</h3><h4 id="1、totalSupply：代币总量"><a href="#1、totalSupply：代币总量" class="headerlink" title="1、totalSupply：代币总量"></a>1、totalSupply：代币总量</h4><h5 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">totalSupply</span>(<span class="params"></span>) <span class="title">constant</span> <span class="title">returns</span> (<span class="params">uint256 totalSupply</span>)</span></span><br></pre></td></tr></table></figure>
+<p><code>方法</code> 该方法用于获取代币总发行量</p>
+<h5 id="2、balanceOf：获取余额"><a href="#2、balanceOf：获取余额" class="headerlink" title="2、balanceOf：获取余额"></a>2、balanceOf：获取余额</h5><h5 id="函数原型-1"><a href="#函数原型-1" class="headerlink" title="函数原型"></a>函数原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">balanceOf</span>(<span class="params">address _owner</span>) <span class="title">constant</span> <span class="title">returns</span> (<span class="params">uint256 balance</span>)</span></span><br></pre></td></tr></table></figure>
+<p><code>方法</code> 该方法用于获取地址 <code>_owner</code> 的代币余额</p>
+<h4 id="3、transfer：转账"><a href="#3、transfer：转账" class="headerlink" title="3、transfer：转账"></a>3、transfer：转账</h4><h5 id="函数原型-2"><a href="#函数原型-2" class="headerlink" title="函数原型"></a>函数原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">transfer</span>(<span class="params">address _to, uint256 _value</span>) <span class="title">returns</span> (<span class="params">bool success</span>)</span></span><br></pre></td></tr></table></figure>
+<p><code>方法</code> 该方法用于将调用代币合约的地址中的<code>_value</code>个代币转给<code>_to</code> 地址</p>
+<h4 id="4、transferFrom：转账"><a href="#4、transferFrom：转账" class="headerlink" title="4、transferFrom：转账"></a>4、transferFrom：转账</h4><h5 id="函数原型-3"><a href="#函数原型-3" class="headerlink" title="函数原型"></a>函数原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">transferFrom</span>(<span class="params">address _from, address _to, uint256 _value</span>) <span class="title">returns</span> (<span class="params">bool success</span>)</span></span><br></pre></td></tr></table></figure>
+<p><code>方法</code> 该方法用于从<code>_from</code> 地址中发送<code>_value</code> 个代币给<code>_to</code>地址。</p>
+<p>当你希望能够使用其他智能合约控制你的代币转移，则可以使用<code>transferFrom</code>方法，而使用<code>transferFrom</code>方法有一个前提条件，那就是需要调用者需要得到 <code>_from</code> 地址的授权，才可以进行代币转移的操作。而如何进行授权，我们接下来会介绍。</p>
+<h4 id="5、approve：授权"><a href="#5、approve：授权" class="headerlink" title="5、approve：授权"></a>5、approve：授权</h4><h5 id="函数原型-4"><a href="#函数原型-4" class="headerlink" title="函数原型"></a>函数原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">approve</span>(<span class="params">address _spender, uint256 _value</span>) <span class="title">returns</span> (<span class="params">bool success</span>)</span></span><br></pre></td></tr></table></figure>
+<p><code>方法</code> 允许 <code>_spender</code> 地址从你的账户中转移 <code>_value</code> 个代币到任何地方。</p>
+<p>当你设置了一个 <code>_value</code> 之后，<code>_spender</code> 地址可以分任何多次将代币进行转移，直至<code>_value</code>为0.</p>
+<h4 id="6、allowance：获取被授权代币余额"><a href="#6、allowance：获取被授权代币余额" class="headerlink" title="6、allowance：获取被授权代币余额"></a>6、allowance：获取被授权代币余额</h4><h5 id="函数原型-5"><a href="#函数原型-5" class="headerlink" title="函数原型"></a>函数原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">allowance</span>(<span class="params">address _owner, address _spender</span>) <span class="title">constant</span> <span class="title">returns</span> (<span class="params">uint256 remaining</span>)</span></span><br></pre></td></tr></table></figure>
+<p><code>方法</code> 获取 <code>_owner</code> 地址授权给 <code>_spender</code> 地址可以转移的代币的余额。</p>
+<h3 id="B-事件-Event"><a href="#B-事件-Event" class="headerlink" title="B. 事件(Event)"></a>B. 事件(Event)</h3><p>事件是EVM内置的日志功能，而且在DAPP中，我们可以通过JS来监听事件的回调。在ERC-20代币中，定义了以下事件：</p>
+<h5 id="1、Transfer：转移代币"><a href="#1、Transfer：转移代币" class="headerlink" title="1、Transfer：转移代币"></a>1、Transfer：转移代币</h5><h5 id="事件定义"><a href="#事件定义" class="headerlink" title="事件定义"></a>事件定义</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">event Transfer(address indexed _from, address indexed _to, uint256 _value)</span><br></pre></td></tr></table></figure>
+<p>当进行代币转移时，需要触发调用该事件。其中记录了代币发送者<code>_from</code>，代币接受者<code>_to</code> ，代币发送量<code>_value</code>.</p>
+<h5 id="2、Approval：授权事件"><a href="#2、Approval：授权事件" class="headerlink" title="2、Approval：授权事件"></a>2、Approval：授权事件</h5><h5 id="事件定义-1"><a href="#事件定义-1" class="headerlink" title="事件定义"></a>事件定义</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">event Approval(address indexed _owner, address indexed _spender, uint256 _value)</span><br></pre></td></tr></table></figure>
+<p>当进行授权时，需要触发调用该事件，其中记录了授权者<code>_owner</code>，被授权者<code>_spender</code>，授权代币量<code>_value</code></p>
+<h2 id="0x03-ERC20代币接口"><a href="#0x03-ERC20代币接口" class="headerlink" title="0x03 ERC20代币接口"></a>0x03 ERC20代币接口</h2><p>通过以上的标准，我们可以了解到一个遵守ERC20代币标准的代币合约需要实现的方法，以下是通过规范实现的一个ERC20代币的接口。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">contract EIP20Interface &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">///////////////////////////// 方法 ///////////////////////////////////</span></span><br><span class="line">    </span><br><span class="line">  	<span class="comment">// 获取代币发行量</span></span><br><span class="line">    <span class="comment">// 注意：constant的修饰符是提示该方法中不能进行变量的修改。</span></span><br><span class="line">    <span class="comment">//      但编译器不会强制校验。</span></span><br><span class="line">    <span class="comment">// @return uint256 totalSupply 总发行量</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">totalSupply</span>(<span class="params"></span>) <span class="title">constant</span> <span class="title">returns</span> (<span class="params">uint256 totalSupply</span>)</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">   	// 获取指定地址</span></span><br><span class="line"><span class="function">    // @<span class="title">param</span> <span class="title">address</span> <span class="title">_owner</span> 想要获取的地址</span></span><br><span class="line"><span class="function">    // @<span class="title">return</span> <span class="title">uint256</span> <span class="title">balance</span> 代币余额</span></span><br><span class="line"><span class="function">    <span class="title">function</span> <span class="title">balanceOf</span>(<span class="params">address _owner</span>) <span class="title">public</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">uint256 balance</span>);</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    // 从`<span class="title">msg</span>.<span class="title">sender</span>`中发送`<span class="title">_value</span>`个代币给`<span class="title">_to</span>` </span></span><br><span class="line"><span class="function">    // @<span class="title">param</span> <span class="title">address</span> <span class="title">_to</span> 接收代币的地址</span></span><br><span class="line"><span class="function">    // @<span class="title">param</span> <span class="title">uint256</span> <span class="title">_value</span> 发送的代币数量</span></span><br><span class="line"><span class="function">    // @<span class="title">return</span> <span class="title">bool</span> <span class="title">success</span> 发送代币成功状态</span></span><br><span class="line"><span class="function">    <span class="title">function</span> <span class="title">transfer</span>(<span class="params">address _to, uint256 _value</span>) <span class="title">public</span> <span class="title">returns</span> (<span class="params">bool success</span>);</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    // 从`<span class="title">_from</span>`地址发送`<span class="title">_value</span>`代币到`<span class="title">_to</span>`地址</span></span><br><span class="line"><span class="function">    // 需要满足条件，需要被`<span class="title">_from</span>`地址授权给`<span class="title">msg</span>.<span class="title">sender</span>`</span></span><br><span class="line"><span class="function">    // @<span class="title">param</span> <span class="title">address</span> <span class="title">_from</span> 发送者地址</span></span><br><span class="line"><span class="function">    // @<span class="title">param</span> <span class="title">address</span> <span class="title">_to</span> 接收者地址</span></span><br><span class="line"><span class="function">    // @<span class="title">param</span> <span class="title">uint256</span> <span class="title">_value</span> 发送的代币数量</span></span><br><span class="line"><span class="function">    // @<span class="title">return</span> <span class="title">bool</span> <span class="title">success</span> 发送代币成功状态</span></span><br><span class="line"><span class="function">    <span class="title">function</span> <span class="title">transferFrom</span>(<span class="params">address _from, address _to, uint256 _value</span>) <span class="title">public</span> <span class="title">returns</span> (<span class="params">bool success</span>);</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    // `<span class="title">msg</span>.<span class="title">sender</span>`授权`<span class="title">_spender</span>`地址可以任意转移`<span class="title">_value</span>`数量的代币</span></span><br><span class="line"><span class="function">    // @<span class="title">param</span> <span class="title">address</span> <span class="title">_spender</span> 被授权发送代币的地址</span></span><br><span class="line"><span class="function">    // @<span class="title">param</span> <span class="title">uint256</span> <span class="title">_value</span> 授权发送代币的数量</span></span><br><span class="line"><span class="function">    // @<span class="title">return</span> <span class="title">bool</span> <span class="title">success</span> 授权成功状态</span></span><br><span class="line"><span class="function">    <span class="title">function</span> <span class="title">approve</span>(<span class="params">address _spender, uint256 _value</span>) <span class="title">public</span> <span class="title">returns</span> (<span class="params">bool success</span>);</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    /// @<span class="title">param</span> <span class="title">_owner</span> <span class="title">The</span> <span class="title">address</span> <span class="title">of</span> <span class="title">the</span> <span class="title">account</span> <span class="title">owning</span> <span class="title">tokens</span></span></span><br><span class="line"><span class="function">    /// @<span class="title">param</span> <span class="title">_spender</span> <span class="title">The</span> <span class="title">address</span> <span class="title">of</span> <span class="title">the</span> <span class="title">account</span> <span class="title">able</span> <span class="title">to</span> <span class="title">transfer</span> <span class="title">the</span> <span class="title">tokens</span></span></span><br><span class="line"><span class="function">    /// @<span class="title">return</span> <span class="title">Amount</span> <span class="title">of</span> <span class="title">remaining</span> <span class="title">tokens</span> <span class="title">allowed</span> <span class="title">to</span> <span class="title">spent</span></span></span><br><span class="line"><span class="function">    // 获取被授权限额</span></span><br><span class="line"><span class="function">    // @<span class="title">param</span> <span class="title">address</span> <span class="title">_owner</span> 代币所有者的账户</span></span><br><span class="line"><span class="function">    // @<span class="title">param</span> <span class="title">address</span> <span class="title">_spender</span> 代币被授权者账户</span></span><br><span class="line"><span class="function">    // @<span class="title">return</span> <span class="title">uint256</span> <span class="title">remaining</span> 剩余可发送的代币数量</span></span><br><span class="line"><span class="function">    <span class="title">function</span> <span class="title">allowance</span>(<span class="params">address _owner, address _spender</span>) <span class="title">public</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">uint256 remaining</span>);</span></span><br><span class="line"><span class="function">	</span></span><br><span class="line"><span class="function">    ///////////////////////////// 事件 ///////////////////////////////////</span></span><br><span class="line"><span class="function">    // 代币转移事件 当发生代币的转移时，需要调用该事件</span></span><br><span class="line"><span class="function">    <span class="title">event</span> <span class="title">Transfer</span>(<span class="params">address indexed _from, address indexed _to, uint256 _value</span>); </span></span><br><span class="line"><span class="function">    // 授权转移事件 当进行授权时，需要触发该事件</span></span><br><span class="line"><span class="function">    <span class="title">event</span> <span class="title">Approval</span>(<span class="params">address indexed _owner, address indexed _spender, uint256 _value</span>);</span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="0x04-ERC20代码示例"><a href="#0x04-ERC20代码示例" class="headerlink" title="0x04 ERC20代码示例"></a>0x04 ERC20代码示例</h3><p>在标准的基础上，有很多代码的实现方法，比如有的在代码中实现空投，有的在实现锁定，有的实现挖矿等等，但是最常规的实现已经有了官方的实现代码，也有很多组织实现了一些范例，如果没有定制化的地方，完全可以直接采用这些代码去创建ERC20代币。</p>
+<p>示例代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^<span class="number">0.4</span><span class="number">.18</span>;</span><br><span class="line"></span><br><span class="line">contract ERC20 &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 定义一个mapping 存储各个地址的代币</span></span><br><span class="line">    mapping (<span class="function"><span class="params">address</span> =&gt;</span> uint256) public balances;</span><br><span class="line">    <span class="comment">// 定义一个mapping 存储授权详情</span></span><br><span class="line">    mapping (<span class="function"><span class="params">address</span> =&gt;</span> mapping (<span class="function"><span class="params">address</span> =&gt;</span> uint256)) public allowed;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 以下参数非必须，但是尽量添加，大多数钱包会通过此获取相关信息</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 代币发行总量</span></span><br><span class="line">    uint256 public totalSupply;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 代币名称，如 OmiseGO</span></span><br><span class="line">    string public name;      </span><br><span class="line">    <span class="comment">// 支持的小数位数</span></span><br><span class="line">    <span class="comment">// 因为在EVM中对浮点数的支持很差，在代币的创建中直接采用整数</span></span><br><span class="line">    <span class="comment">// 然后通过该字段进行小数的处理</span></span><br><span class="line">    uint8 public decimals;                </span><br><span class="line">    <span class="comment">// 代币简称，如 OMG</span></span><br><span class="line">    string public symbol;              </span><br><span class="line"></span><br><span class="line">    <span class="comment">// 代币合约的构造函数</span></span><br><span class="line">    <span class="comment">// 在solidity中，和合约名称一致的方法为构造函数，在第一次创建合约时，仅执行一次。</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">ERC20</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">        uint256 _totalSupply,	<span class="regexp">//</span> 代币创建总量</span></span></span><br><span class="line"><span class="function"><span class="params">        string _name,		<span class="regexp">//</span> 代币名称</span></span></span><br><span class="line"><span class="function"><span class="params">        uint8 _decimals,	<span class="regexp">//</span> 支持小数位数</span></span></span><br><span class="line"><span class="function"><span class="params">        string _symbol		<span class="regexp">//</span> 代币简称</span></span></span><br><span class="line"><span class="function"><span class="params">    </span>) <span class="title">public</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 给创建者账户初始化代币</span></span><br><span class="line">        balances[msg.sender] = _totalSupply;               </span><br><span class="line">        <span class="comment">// 设置代币发行量</span></span><br><span class="line">        totalSupply = _totalSupply;                        </span><br><span class="line">        <span class="comment">// 设置代币名称</span></span><br><span class="line">        name = _name;                                   </span><br><span class="line">        <span class="comment">// 设置代币支持小数位数</span></span><br><span class="line">        decimals = _decimals;                            </span><br><span class="line">        <span class="comment">// 设置代币简称</span></span><br><span class="line">        symbol = _symbol;                               </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取代币总发行量</span></span><br><span class="line"><span class="comment">     * @return uint256 totalSupply 发行总量</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">totalSupply</span>(<span class="params"></span>) <span class="title">constant</span> <span class="title">returns</span> (<span class="params">uint256 totalSupply</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> totalSupply;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 转移代币</span></span><br><span class="line"><span class="comment">     * @param address _to 代币接收者地址       </span></span><br><span class="line"><span class="comment">     * @param uint256 _value 发送代币数量</span></span><br><span class="line"><span class="comment">     * @return bool success 发送成功状态</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">transfer</span>(<span class="params">address _to, uint256 _value</span>) <span class="title">public</span> <span class="title">returns</span> (<span class="params">bool success</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// 判断发送者余额是否充足</span></span><br><span class="line">        <span class="built_in">require</span>(balances[msg.sender] &gt;= _value);</span><br><span class="line">        <span class="comment">// 从发送者余额中减去`_value`数量的代币</span></span><br><span class="line">        balances[msg.sender] -= _value;</span><br><span class="line">        <span class="comment">// 给接收者账户中添加`_value`数量的代币</span></span><br><span class="line">        balances[_to] += _value;</span><br><span class="line">        <span class="comment">// 记录代币转移的事件</span></span><br><span class="line">        Transfer(msg.sender, _to, _value);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 转移代币(授权)</span></span><br><span class="line"><span class="comment">     * @param address _from 代币发送者地址</span></span><br><span class="line"><span class="comment">     * @param address _to 代币接收者地址</span></span><br><span class="line"><span class="comment">     * @param uint256 _value 代币发送数量</span></span><br><span class="line"><span class="comment">     * @return bool success 方法执行状态</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">transferFrom</span>(<span class="params">address _from, address _to, uint256 _value</span>) <span class="title">public</span> <span class="title">returns</span> (<span class="params">bool success</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 其中`msg.sender`是合约方法调用者的地址</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 获取`_from`地址授权给`msg.sender`地址的可转移代币余额</span></span><br><span class="line">        uint256 allowance = allowed[_from][msg.sender];</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 判断`_from`地址余额是否充足以及授权转移代币是否充足</span></span><br><span class="line">        <span class="built_in">require</span>(balances[_from] &gt;= _value &amp;&amp; allowance &gt;= _value);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 从`_from`地址减去`_value`数量的代币</span></span><br><span class="line">        balances[_from] -= _value;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 从授权余额中减去`_value`数量的代币</span></span><br><span class="line">        allowed[_from][msg.sender] -= _value;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 给`_to`地址添加`_value`数量的代币</span></span><br><span class="line">        balances[_to] += _value;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 记录转移代币的事件</span></span><br><span class="line">        Transfer(_from, _to, _value);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取`_owner`地址的代币余额</span></span><br><span class="line"><span class="comment">     * @param address _owner 要获取余额的地址</span></span><br><span class="line"><span class="comment">     * @return uint256 balance 返回`_owner`地址的余额</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">balanceOf</span>(<span class="params">address _owner</span>) <span class="title">public</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">uint256 balance</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> balances[_owner];</span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 授权代币转移方法</span></span><br><span class="line"><span class="comment">     * @param address _spender 被授权地址</span></span><br><span class="line"><span class="comment">     * @param uint256 _value 授权可转移的数量</span></span><br><span class="line"><span class="comment">     * @return bool success 方法执行状态</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">approve</span>(<span class="params">address _spender, uint256 _value</span>) <span class="title">public</span> <span class="title">returns</span> (<span class="params">bool success</span>) </span>&#123;</span><br><span class="line">        <span class="comment">// `msg.sender`授权`_spender`地址转移`_value`数量的代币</span></span><br><span class="line">        allowed[msg.sender][_spender] = _value;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 记录授权事件</span></span><br><span class="line">        Approval(msg.sender, _spender, _value);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 获取被授权的代币余额</span></span><br><span class="line"><span class="comment">     * @param address _owner 授权地址</span></span><br><span class="line"><span class="comment">     * @param address _spender 被授权地址        </span></span><br><span class="line"><span class="comment">     * @return uint256 remaining 可转移的代币余额</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">allowance</span>(<span class="params">address _owner, address _spender</span>) <span class="title">public</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">uint256 remaining</span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> allowed[_owner][_spender];</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="0x05-写在后面"><a href="#0x05-写在后面" class="headerlink" title="0x05 写在后面"></a>0x05 写在后面</h2><p>大多数在交易所交易的代币的合约代码就这么简单，其实每一个方法拆分开来都是最简单的编程代码，而核心的处理都被EVM进行了封装，以太坊在代币发行方面确实极大的解放了人类，简单几十行代码就可以发行一个代币。ERC20代币又被成为同质化代币，就是每个代币都是一致的，无法区分，而市场上现在冒出了很多以太猫，以太狗的游戏，而这里面也是使用以太坊的代币来实现的，但是他们选择的不是ERC20代币，而是被成为非同质化的代币，被称为ERC721代币。</p>
+<p>下期，我们一起来聊非同质化代币ERC721。</p>
+<blockquote>
+<p>如果喜欢，别说话，扫我~</p>
+</blockquote>
+<p><a href="https://postimg.org/image/h5jzg3m0t/" target="_blank" rel="noopener"><img src="https://s14.postimg.org/788yn1ef5/qrcode_for_gh_0f12fe5ef5fd_258.jpg" alt="qrcode_for_gh_0f12fe5ef5fd_258.jpg"></a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ethereum/" rel="tag"># ethereum</a>
+          
+            <a href="/tags/solidity/" rel="tag"># solidity</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/19/web3-deploy-smart-contract-md/" rel="next" title="如何使用web3部署智能合约？">
+                <i class="fa fa-chevron-left"></i> 如何使用web3部署智能合约？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div class="ds-thread" data-thread-key="2018/03/26/ethereum-erc-20/"
+           data-title="以太坊标准代币系列之同质化代币ERC20" data-url="http://yoursite.com/2018/03/26/ethereum-erc-20/">
+      </div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://7xkyde.com1.z0.glb.clouddn.com/img.png"
+                alt="我才是二亮" />
+            
+              <p class="site-author-name" itemprop="name">我才是二亮</p>
+              <p class="site-description motion-element" itemprop="description">一个半条腿迈入区块链世界的男人，立志在区块链领域做出一些伟大的事情。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/unstring" target="_blank" title="微博">
+                    
+                      <i class="fa fa-fw fa-globe"></i>微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.douban.com/people/102437430/" target="_blank" title="豆瓣">
+                    
+                      <i class="fa fa-fw fa-globe"></i>豆瓣</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/2liang" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-写在前面"><span class="nav-number">1.</span> <span class="nav-text">0x00 写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-ERC20标准制定动机"><span class="nav-number">2.</span> <span class="nav-text">0x01 ERC20标准制定动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-ERC20标准规范"><span class="nav-number">3.</span> <span class="nav-text">0x02 ERC20标准规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A-方法-Method"><span class="nav-number">3.1.</span> <span class="nav-text">A. 方法(Method)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、totalSupply：代币总量"><span class="nav-number">3.1.1.</span> <span class="nav-text">1、totalSupply：代币总量</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#函数原型"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">函数原型</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、balanceOf：获取余额"><span class="nav-number">3.1.1.2.</span> <span class="nav-text">2、balanceOf：获取余额</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#函数原型-1"><span class="nav-number">3.1.1.3.</span> <span class="nav-text">函数原型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、transfer：转账"><span class="nav-number">3.1.2.</span> <span class="nav-text">3、transfer：转账</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#函数原型-2"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">函数原型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、transferFrom：转账"><span class="nav-number">3.1.3.</span> <span class="nav-text">4、transferFrom：转账</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#函数原型-3"><span class="nav-number">3.1.3.1.</span> <span class="nav-text">函数原型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、approve：授权"><span class="nav-number">3.1.4.</span> <span class="nav-text">5、approve：授权</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#函数原型-4"><span class="nav-number">3.1.4.1.</span> <span class="nav-text">函数原型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6、allowance：获取被授权代币余额"><span class="nav-number">3.1.5.</span> <span class="nav-text">6、allowance：获取被授权代币余额</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#函数原型-5"><span class="nav-number">3.1.5.1.</span> <span class="nav-text">函数原型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-事件-Event"><span class="nav-number">3.2.</span> <span class="nav-text">B. 事件(Event)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1、Transfer：转移代币"><span class="nav-number">3.2.0.1.</span> <span class="nav-text">1、Transfer：转移代币</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事件定义"><span class="nav-number">3.2.0.2.</span> <span class="nav-text">事件定义</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2、Approval：授权事件"><span class="nav-number">3.2.0.3.</span> <span class="nav-text">2、Approval：授权事件</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#事件定义-1"><span class="nav-number">3.2.0.4.</span> <span class="nav-text">事件定义</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-ERC20代币接口"><span class="nav-number">4.</span> <span class="nav-text">0x03 ERC20代币接口</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0x04-ERC20代码示例"><span class="nav-number">4.1.</span> <span class="nav-text">0x04 ERC20代码示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-写在后面"><span class="nav-number">5.</span> <span class="nav-text">0x05 写在后面</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我才是二亮</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"2liang"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("GUmazrXSU5LNyVXhXXlliccO-gzGzoHsz", "mo9dVl6hs73TalGEYwoLzeQM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
