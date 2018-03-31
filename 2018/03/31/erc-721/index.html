@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ethereum,solidity," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="二话区块链" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="0x00 写在前面在2013年7月，一款被称为MasterCoin的项目通过数字货币论坛Bitcointalk募集了超过5000个比特币，至此开启了区块链界的新的一轮资金众筹的方式。后来跃居数字货币市值榜第二的以太坊网络在主网上线后，推出了一个功能，发行代币。而这个功能将区块链界的资金募集推上了高峰。 为了更快速化的发行一款令牌，以太坊社区制定了一个令牌标准规范ERC20，直接将代币的发行时间降低">
+<meta name="keywords" content="ethereum,solidity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="以太坊令牌系列之非同质化令牌ERC721">
+<meta property="og:url" content="http://yoursite.com/2018/03/31/erc-721/index.html">
+<meta property="og:site_name" content="二话区块链">
+<meta property="og:description" content="0x00 写在前面在2013年7月，一款被称为MasterCoin的项目通过数字货币论坛Bitcointalk募集了超过5000个比特币，至此开启了区块链界的新的一轮资金众筹的方式。后来跃居数字货币市值榜第二的以太坊网络在主网上线后，推出了一个功能，发行代币。而这个功能将区块链界的资金募集推上了高峰。 为了更快速化的发行一款令牌，以太坊社区制定了一个令牌标准规范ERC20，直接将代币的发行时间降低">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://s14.postimg.org/788yn1ef5/qrcode_for_gh_0f12fe5ef5fd_258.jpg">
+<meta property="og:updated_time" content="2018-03-31T15:37:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="以太坊令牌系列之非同质化令牌ERC721">
+<meta name="twitter:description" content="0x00 写在前面在2013年7月，一款被称为MasterCoin的项目通过数字货币论坛Bitcointalk募集了超过5000个比特币，至此开启了区块链界的新的一轮资金众筹的方式。后来跃居数字货币市值榜第二的以太坊网络在主网上线后，推出了一个功能，发行代币。而这个功能将区块链界的资金募集推上了高峰。 为了更快速化的发行一款令牌，以太坊社区制定了一个令牌标准规范ERC20，直接将代币的发行时间降低">
+<meta name="twitter:image" content="https://s14.postimg.org/788yn1ef5/qrcode_for_gh_0f12fe5ef5fd_258.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/31/erc-721/"/>
+
+
+
+
+
+  <title>以太坊令牌系列之非同质化令牌ERC721 | 二话区块链</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">二话区块链</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">区块链使我快乐</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/31/erc-721/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="我才是二亮">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="http://7xkyde.com1.z0.glb.clouddn.com/img.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="二话区块链">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">以太坊令牌系列之非同质化令牌ERC721</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-31T23:38:27+08:00">
+                2018-03-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/区块链/" itemprop="url" rel="index">
+                    <span itemprop="name">区块链</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/31/erc-721/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2018/03/31/erc-721/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/03/31/erc-721/" class="leancloud_visitors" data-flag-title="以太坊令牌系列之非同质化令牌ERC721">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="0x00-写在前面"><a href="#0x00-写在前面" class="headerlink" title="0x00 写在前面"></a>0x00 写在前面</h2><p>在2013年7月，一款被称为MasterCoin的项目通过数字货币论坛Bitcointalk募集了超过5000个比特币，至此开启了区块链界的新的一轮资金众筹的方式。后来跃居数字货币市值榜第二的以太坊网络在主网上线后，推出了一个功能，发行代币。而这个功能将区块链界的资金募集推上了高峰。</p>
+<p>为了更快速化的发行一款令牌，以太坊社区制定了一个令牌标准规范ERC20，直接将代币的发行时间降低到10分钟以内。</p>
+<p>而最近火热的猫猫狗狗游戏，本质上也是一种基于以太坊网络的令牌，每一只猫或者狗都是一个以太坊上的令牌，而且这些令牌每一个都独一无二，无法互换。而这种令牌被社区极其看好，遂社区制定了一项关于非同质化令牌标准，这项标准就是我们今天要说的ERC721.</p>
+<p>相比于ERC20，ERC721的想象空间就更大了，由于其独特的属性，每个令牌独一无二，不仅对于虚拟资产可以通证化，也可以对于现实生活中的车子房子进行通证化，当资产可以通证化，我们便能实现资产的上链。</p>
+<h2 id="0x01-ERC721标准制定动机"><a href="#0x01-ERC721标准制定动机" class="headerlink" title="0x01 ERC721标准制定动机"></a>0x01 ERC721标准制定动机</h2><p>为了让任何人都能在以太坊上发行ERC721这种非同质化的代币，并且能够让钱包/拍卖应用/交易所等应用能够简单而且顺利的快速接入这类非同质化代币，以太坊社区制定了ERC721代币标准。</p>
+<p>ERC721代币被称为非同质化代币，应为为<code>non-fungible tokens</code>，简称NFT。</p>
+<h2 id="0x02-ERC721标准规范"><a href="#0x02-ERC721标准规范" class="headerlink" title="0x02 ERC721标准规范"></a>0x02 ERC721标准规范</h2><p>在ERC721规范中，为了让代币实现非同质化，每个NFT都拥有一个唯一的ID标识，并且标识在智能合约内是不可变的，而这个NFT将可以实现标记现实中的某个资产，包括房子，车子，收藏品等。</p>
+<p>在ERC20代币中，每个代币的转移都是同样的，并且代币可以进行拆分，最多支持小数点后18位，而在ERC721中每个代币无法拆分，一个代币就是一份资产，所以的转移交换都是单个代币的交换，因为映射到现实中，我们的房子车子都不能拆分成很多份。</p>
+<p>我们在转移ERC20代币时，只需要标记我们转移的数量，不需要指定我到底转移的是我100个代币里面的哪一个，因为他们是同质代币，转哪一个的价值都是一样的。而在ERC721中，我们每次转移代币都需要指定所要转移的代币的ID，因为每一个代币都代表了不同的数字资产，或者映射在现实中的某个实体资产。</p>
+<p>每一个实现ERC721标准代币的合约，都需要满足一下方法：</p>
+<h3 id="A-方法-Method"><a href="#A-方法-Method" class="headerlink" title="A. 方法 Method"></a>A. 方法 <code>Method</code></h3><h4 id="1、balanceOf-获取余额"><a href="#1、balanceOf-获取余额" class="headerlink" title="1、balanceOf() 获取余额"></a>1、<code>balanceOf()</code> 获取余额</h4><h5 id="函数原型"><a href="#函数原型" class="headerlink" title="函数原型"></a>函数原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">balanceOf</span>(<span class="params">address _owner</span>) <span class="title">external</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">uint256</span>);</span></span><br></pre></td></tr></table></figure>
+<p><code>方法</code> 获取<code>_owner</code> 地址的余额，<code>external</code> 修饰符代表该方法仅能在合约外部访问。</p>
+<h4 id="2、ownerOf-获取token的所有者"><a href="#2、ownerOf-获取token的所有者" class="headerlink" title="2、ownerOf() 获取token的所有者"></a>2、<code>ownerOf()</code> 获取token的所有者</h4><h5 id="函数原型-1"><a href="#函数原型-1" class="headerlink" title="函数原型"></a>函数原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">ownerOf</span>(<span class="params">uint256 _tokenId</span>) <span class="title">external</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">address</span>);</span></span><br></pre></td></tr></table></figure>
+<p><code>方法</code> 获取指定 <code>_tokenId</code> 的代币的所有者，仅合约外部能够访问。</p>
+<p>因为ERC721代币，有自己的唯一标识，所以我们可以通过唯一标识去识别该代币的主人是谁，而ERC20是做不到这一点的，这也说明ERC721可以用来确权。</p>
+<h4 id="3、transferFrom-转移代币"><a href="#3、transferFrom-转移代币" class="headerlink" title="3、transferFrom() 转移代币"></a>3、<code>transferFrom()</code> 转移代币</h4><h5 id="函数原型-2"><a href="#函数原型-2" class="headerlink" title="函数原型"></a>函数原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">transferFrom</span>(<span class="params">address _from, address _to, uint256 _tokenId</span>) <span class="title">external</span> <span class="title">payable</span>;</span></span><br></pre></td></tr></table></figure>
+<p><code>方法</code> 从 <code>_from</code> 地址中转出 <code>_tokenId</code> 代币到 <code>_to</code> 地址中。</p>
+<p>在ERC721中转移代币，必须标记你所要转移的代币的唯一标识ID。</p>
+<h4 id="4、safeTransferFrom-安全转移代币"><a href="#4、safeTransferFrom-安全转移代币" class="headerlink" title="4、safeTransferFrom() 安全转移代币"></a>4、<code>safeTransferFrom()</code> 安全转移代币</h4><h5 id="函数原型-3"><a href="#函数原型-3" class="headerlink" title="函数原型"></a>函数原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">safeTransferFrom</span>(<span class="params">address _from, address _to, uint256 _tokenId</span>) <span class="title">external</span> <span class="title">payable</span>;</span></span><br></pre></td></tr></table></figure>
+<p><code>方法</code> 从 <code>_from</code> 地址中转出 <code>_tokenId</code> 代币到 <code>_to</code> 地址中。</p>
+<h4 id="5、approve-授权代币操作权"><a href="#5、approve-授权代币操作权" class="headerlink" title="5、approve() 授权代币操作权"></a>5、<code>approve()</code> 授权代币操作权</h4><h5 id="函数原型-4"><a href="#函数原型-4" class="headerlink" title="函数原型"></a>函数原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">approve</span>(<span class="params">address _approved, uint256 _tokenId</span>) <span class="title">external</span> <span class="title">payable</span>;</span></span><br></pre></td></tr></table></figure>
+<p><code>方法</code> 授权批准 <code>_approved</code> 地址拥有 <code>_tokenId</code> 代币的运营权。</p>
+<p>授权人必须是 <code>_tokenId</code> 代币的所有者或者已经被批准拥有该代币运营权的地址。</p>
+<h4 id="6、setApprovalForAll-设置代币操作权"><a href="#6、setApprovalForAll-设置代币操作权" class="headerlink" title="6、setApprovalForAll() 设置代币操作权"></a>6、<code>setApprovalForAll()</code> 设置代币操作权</h4><h5 id="函数原型-5"><a href="#函数原型-5" class="headerlink" title="函数原型"></a>函数原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">setApprovalForAll</span>(<span class="params">address _operator, bool _approved</span>) <span class="title">external</span>;</span></span><br></pre></td></tr></table></figure>
+<p><code>方法</code> 授权批准加入或者移除 <code>_operator</code> 成为自己所有代币的运营者。合约必须支持代币存在多个运营者。</p>
+<h4 id="7、getApproved-获取被批准者"><a href="#7、getApproved-获取被批准者" class="headerlink" title="7、getApproved() 获取被批准者"></a>7、<code>getApproved()</code> 获取被批准者</h4><h5 id="函数原型-6"><a href="#函数原型-6" class="headerlink" title="函数原型"></a>函数原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">getApproved</span>(<span class="params">uint256 _tokenId</span>) <span class="title">external</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">address</span>);</span></span><br></pre></td></tr></table></figure>
+<p><code>方法</code> 获取 <code>_tokenId</code> 代币的被授权运营者</p>
+<h4 id="8、isApprovedForAll-是否被授权"><a href="#8、isApprovedForAll-是否被授权" class="headerlink" title="8、isApprovedForAll() 是否被授权"></a>8、<code>isApprovedForAll()</code> 是否被授权</h4><h5 id="函数原型-7"><a href="#函数原型-7" class="headerlink" title="函数原型"></a>函数原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isApprovedForAll</span>(<span class="params">address _owner, address _operator</span>) <span class="title">external</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">bool</span>);</span></span><br></pre></td></tr></table></figure>
+<p><code>方法</code> 判断 <code>_operator</code> 是否被 <code>_owner</code> 授权为所有代币的运营者</p>
+<h3 id="B-事件-Event"><a href="#B-事件-Event" class="headerlink" title="B. 事件 Event"></a>B. 事件 <code>Event</code></h3><h4 id="1、Transfer-转移事件"><a href="#1、Transfer-转移事件" class="headerlink" title="1、Transfer() 转移事件"></a>1、<code>Transfer()</code> 转移事件</h4><h5 id="事件原型"><a href="#事件原型" class="headerlink" title="事件原型"></a>事件原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">event Transfer(address indexed _from, address indexed _to, uint256 _tokenId);</span><br></pre></td></tr></table></figure>
+<p><code>事件</code> 当进行代币的转移时，触发该事件。</p>
+<h4 id="2、Approval-授权事件"><a href="#2、Approval-授权事件" class="headerlink" title="2、Approval() 授权事件"></a>2、<code>Approval()</code> 授权事件</h4><h5 id="事件原型-1"><a href="#事件原型-1" class="headerlink" title="事件原型"></a>事件原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">event Approval(address indexed _owner, address indexed _approved, uint256 _tokenId);</span><br></pre></td></tr></table></figure>
+<p><code>事件</code> 进行单token授权时，触发该事件。</p>
+<h4 id="3、ApprovalForAll-授权所有代币事件"><a href="#3、ApprovalForAll-授权所有代币事件" class="headerlink" title="3、ApprovalForAll() 授权所有代币事件"></a>3、<code>ApprovalForAll()</code> 授权所有代币事件</h4><h5 id="事件原型-2"><a href="#事件原型-2" class="headerlink" title="事件原型"></a>事件原型</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);</span><br></pre></td></tr></table></figure>
+<p><code>事件</code> <code>setApprovalForAll</code>方法调用时触发</p>
+<h2 id="0x03-ERC721标准接口"><a href="#0x03-ERC721标准接口" class="headerlink" title="0x03 ERC721标准接口"></a>0x03 ERC721标准接口</h2><p>在ERC721代币合约实现时，必须实现ERC721接口以及ERC165接口，以下为接口：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^<span class="number">0.4</span><span class="number">.20</span>;</span><br><span class="line"></span><br><span class="line">interface ERC721 &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 转移事件，记录转出，转入，以及被转移代币的ID</span></span><br><span class="line">    event Transfer(address indexed _from, address indexed _to, uint256 _tokenId);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 授权，记录授权者，被授权者，被授权代币ID</span></span><br><span class="line">    event Approval(address indexed _owner, address indexed _approved, uint256 _tokenId);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 授权所有代币，记录授权者，被授权者</span></span><br><span class="line">    event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取代币余额</span></span><br><span class="line">    <span class="comment">// @params address _owner 代币所有者</span></span><br><span class="line">    <span class="comment">// @return uint256 返回数量</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">balanceOf</span>(<span class="params">address _owner</span>) <span class="title">external</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">uint256</span>);</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    // 获取<span class="title">nft</span>代币所有者</span></span><br><span class="line"><span class="function">    // @<span class="title">params</span> <span class="title">uint256</span> <span class="title">_tokenId</span> 代币<span class="title">ID</span></span></span><br><span class="line"><span class="function">    // @<span class="title">return</span> <span class="title">address</span> 拥有者地址</span></span><br><span class="line"><span class="function">    <span class="title">function</span> <span class="title">ownerOf</span>(<span class="params">uint256 _tokenId</span>) <span class="title">external</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">address</span>);</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    // 安全转移代币</span></span><br><span class="line"><span class="function">    // @<span class="title">params</span> <span class="title">address</span> <span class="title">_from</span> 发送人地址</span></span><br><span class="line"><span class="function">    // @<span class="title">params</span> <span class="title">address</span> <span class="title">_to</span> 收款人地址</span></span><br><span class="line"><span class="function">    // @<span class="title">params</span> <span class="title">uint256</span> <span class="title">_tokenId</span> 代币<span class="title">ID</span></span></span><br><span class="line"><span class="function">    <span class="title">function</span> <span class="title">safeTransferFrom</span>(<span class="params">address _from, address _to, uint256 _tokenId</span>) <span class="title">external</span> <span class="title">payable</span>;</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    // 转移代币</span></span><br><span class="line"><span class="function">    // @<span class="title">params</span> <span class="title">address</span> <span class="title">_from</span> 发送人地址</span></span><br><span class="line"><span class="function">    // @<span class="title">params</span> <span class="title">address</span> <span class="title">_to</span> 收款人地址</span></span><br><span class="line"><span class="function">    // @<span class="title">params</span> <span class="title">uint256</span> <span class="title">_tokenId</span> 代币<span class="title">ID</span></span></span><br><span class="line"><span class="function">    <span class="title">function</span> <span class="title">transferFrom</span>(<span class="params">address _from, address _to, uint256 _tokenId</span>) <span class="title">external</span> <span class="title">payable</span>;</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    // 授权</span></span><br><span class="line"><span class="function">    // @<span class="title">params</span> <span class="title">address</span> <span class="title">_approved</span> 被授权人</span></span><br><span class="line"><span class="function">    // @<span class="title">params</span> <span class="title">uint256</span> <span class="title">_tokenId</span> 代币<span class="title">ID</span></span></span><br><span class="line"><span class="function">    <span class="title">function</span> <span class="title">approve</span>(<span class="params">address _approved, uint256 _tokenId</span>) <span class="title">external</span> <span class="title">payable</span>;</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    // 授权加入或者移除所有运营权</span></span><br><span class="line"><span class="function">    // @<span class="title">params</span> <span class="title">address</span> <span class="title">_approved</span> 被授权人</span></span><br><span class="line"><span class="function">    // @<span class="title">params</span> <span class="title">bool</span> <span class="title">_approved</span> 加入或删除</span></span><br><span class="line"><span class="function">    <span class="title">function</span> <span class="title">setApprovalForAll</span>(<span class="params">address _operator, bool _approved</span>) <span class="title">external</span>;</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    // 获取被授权人</span></span><br><span class="line"><span class="function">    // @<span class="title">params</span> <span class="title">uint256</span> <span class="title">_tokenId</span> 代币<span class="title">ID</span></span></span><br><span class="line"><span class="function">    // @<span class="title">return</span> <span class="title">address</span> 被授权地址</span></span><br><span class="line"><span class="function">    <span class="title">function</span> <span class="title">getApproved</span>(<span class="params">uint256 _tokenId</span>) <span class="title">external</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">address</span>);</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function">    // 是否代币运营者</span></span><br><span class="line"><span class="function">    // @<span class="title">params</span> <span class="title">address</span> <span class="title">_owner</span> 所有者</span></span><br><span class="line"><span class="function">    // @<span class="title">params</span> <span class="title">address</span> <span class="title">_operator</span> 被授权者</span></span><br><span class="line"><span class="function">    // @<span class="title">return</span> <span class="title">bool</span> 是/否</span></span><br><span class="line"><span class="function">    <span class="title">function</span> <span class="title">isApprovedForAll</span>(<span class="params">address _owner, address _operator</span>) <span class="title">external</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">bool</span>);</span></span><br><span class="line"><span class="function">&#125;</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="title">interface</span> <span class="title">ERC165</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 查看是否支持该接口</span></span><br><span class="line">    <span class="comment">// @params bytes4 interfaceID 接口ID</span></span><br><span class="line">    <span class="comment">// 计算方式如：bytes4(keccak256('supportsInterface(bytes4)'))</span></span><br><span class="line">    <span class="function"><span class="keyword">function</span> <span class="title">supportsInterface</span>(<span class="params">bytes4 interfaceID</span>) <span class="title">external</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">bool</span>);</span></span><br><span class="line"><span class="function">&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="0x04-代码示例"><a href="#0x04-代码示例" class="headerlink" title="0x04 代码示例"></a>0x04 代码示例</h2><p>以下为<code>OpenZeppelin</code>提供的代码示例，仅提供主要方法代码，完整版代码请通过附录获取：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br></pre></td><td class="code"><pre><span class="line">pragma solidity ^<span class="number">0.4</span><span class="number">.18</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * @title ERC721 Non-Fungible Token Standard basic implementation</span></span><br><span class="line"><span class="comment"> * @dev see https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">contract ERC721BasicToken &#123;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 等于 `bytes4(keccak256("onERC721Received(address,uint256,bytes)"))`</span></span><br><span class="line">  bytes4 constant ERC721_RECEIVED = <span class="number">0xf0b9e5ba</span>;</span><br><span class="line">    </span><br><span class="line">  <span class="comment">// 定义mapping 记录token的所有者</span></span><br><span class="line">  mapping (<span class="function"><span class="params">uint256</span> =&gt;</span> address) internal tokenOwner;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 记录指定token被授权人的地址</span></span><br><span class="line">  mapping (<span class="function"><span class="params">uint256</span> =&gt;</span> address) internal tokenApprovals;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 记录指定地址拥有多少个token</span></span><br><span class="line">  mapping (<span class="function"><span class="params">address</span> =&gt;</span> uint256) internal ownedTokensCount;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 记录代币运营者</span></span><br><span class="line">  mapping (<span class="function"><span class="params">address</span> =&gt;</span> mapping (<span class="function"><span class="params">address</span> =&gt;</span> bool)) internal operatorApprovals;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 修饰符，是否是 `_tokenId` 的所有者</span></span><br><span class="line">  modifier onlyOwnerOf(uint256 _tokenId) &#123;</span><br><span class="line">    <span class="built_in">require</span>(ownerOf(_tokenId) == msg.sender);</span><br><span class="line">    _;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 修饰符 是否可以对该代币进行转账</span></span><br><span class="line">  modifier canTransfer(uint256 _tokenId) &#123;</span><br><span class="line">    <span class="built_in">require</span>(isApprovedOrOwner(msg.sender, _tokenId));</span><br><span class="line">    _;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 获取代币余额</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">balanceOf</span>(<span class="params">address _owner</span>) <span class="title">public</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">uint256</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">require</span>(_owner != address(<span class="number">0</span>));</span><br><span class="line">    <span class="keyword">return</span> ownedTokensCount[_owner];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 代币持有人获取</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">ownerOf</span>(<span class="params">uint256 _tokenId</span>) <span class="title">public</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">address</span>) </span>&#123;</span><br><span class="line">    address owner = tokenOwner[_tokenId];</span><br><span class="line">    <span class="built_in">require</span>(owner != address(<span class="number">0</span>));</span><br><span class="line">    <span class="keyword">return</span> owner;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 某个nft代币是否真实存在</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">exists</span>(<span class="params">uint256 _tokenId</span>) <span class="title">public</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">bool</span>) </span>&#123;</span><br><span class="line">    address owner = tokenOwner[_tokenId];</span><br><span class="line">    <span class="keyword">return</span> owner != address(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 授权代币运营权</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">approve</span>(<span class="params">address _to, uint256 _tokenId</span>) <span class="title">public</span> </span>&#123;</span><br><span class="line">    address owner = ownerOf(_tokenId);</span><br><span class="line">    <span class="built_in">require</span>(_to != owner);</span><br><span class="line">    <span class="built_in">require</span>(msg.sender == owner || isApprovedForAll(owner, msg.sender));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (getApproved(_tokenId) != address(<span class="number">0</span>) || _to != address(<span class="number">0</span>)) &#123;</span><br><span class="line">      tokenApprovals[_tokenId] = _to;</span><br><span class="line">      Approval(owner, _to, _tokenId);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 获取运营权归属者</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">getApproved</span>(<span class="params">uint256 _tokenId</span>) <span class="title">public</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">address</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> tokenApprovals[_tokenId];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 从运营列表中移除或者添加进列表</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">setApprovalForAll</span>(<span class="params">address _to, bool _approved</span>) <span class="title">public</span> </span>&#123;</span><br><span class="line">    <span class="built_in">require</span>(_to != msg.sender);</span><br><span class="line">    operatorApprovals[msg.sender][_to] = _approved;</span><br><span class="line">    ApprovalForAll(msg.sender, _to, _approved);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 判断是否是运营者</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">isApprovedForAll</span>(<span class="params">address _owner, address _operator</span>) <span class="title">public</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">bool</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> operatorApprovals[_owner][_operator];</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 代币转移</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">transferFrom</span>(<span class="params">address _from, address _to, uint256 _tokenId</span>) <span class="title">public</span> <span class="title">canTransfer</span>(<span class="params">_tokenId</span>) </span>&#123;</span><br><span class="line">    <span class="built_in">require</span>(_from != address(<span class="number">0</span>));</span><br><span class="line">    <span class="built_in">require</span>(_to != address(<span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">    clearApproval(_from, _tokenId);</span><br><span class="line">    removeTokenFrom(_from, _tokenId);</span><br><span class="line">    addTokenTo(_to, _tokenId);</span><br><span class="line"></span><br><span class="line">    Transfer(_from, _to, _tokenId);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 安全转移</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">safeTransferFrom</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    address _from,</span></span></span><br><span class="line"><span class="function"><span class="params">    address _to,</span></span></span><br><span class="line"><span class="function"><span class="params">    uint256 _tokenId</span></span></span><br><span class="line"><span class="function"><span class="params">  </span>)</span></span><br><span class="line"><span class="function">    <span class="title">public</span></span></span><br><span class="line"><span class="function">    <span class="title">canTransfer</span>(<span class="params">_tokenId</span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    safeTransferFrom(_from, _to, _tokenId, <span class="string">""</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 是否拥有代币的运营权</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">isApprovedOrOwner</span>(<span class="params">address _spender, uint256 _tokenId</span>) <span class="title">internal</span> <span class="title">view</span> <span class="title">returns</span> (<span class="params">bool</span>) </span>&#123;</span><br><span class="line">    address owner = ownerOf(_tokenId);</span><br><span class="line">    <span class="keyword">return</span> _spender == owner || getApproved(_tokenId) == _spender || isApprovedForAll(owner, _spender);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 清除运营权</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">clearApproval</span>(<span class="params">address _owner, uint256 _tokenId</span>) <span class="title">internal</span> </span>&#123;</span><br><span class="line">    <span class="built_in">require</span>(ownerOf(_tokenId) == _owner);</span><br><span class="line">    <span class="keyword">if</span> (tokenApprovals[_tokenId] != address(<span class="number">0</span>)) &#123;</span><br><span class="line">      tokenApprovals[_tokenId] = address(<span class="number">0</span>);</span><br><span class="line">      Approval(_owner, address(<span class="number">0</span>), _tokenId);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 添加一个代币</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">addTokenTo</span>(<span class="params">address _to, uint256 _tokenId</span>) <span class="title">internal</span> </span>&#123;</span><br><span class="line">    <span class="built_in">require</span>(tokenOwner[_tokenId] == address(<span class="number">0</span>));</span><br><span class="line">    tokenOwner[_tokenId] = _to;</span><br><span class="line">    ownedTokensCount[_to] = ownedTokensCount[_to].add(<span class="number">1</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 移除一个代币</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">removeTokenFrom</span>(<span class="params">address _from, uint256 _tokenId</span>) <span class="title">internal</span> </span>&#123;</span><br><span class="line">    <span class="built_in">require</span>(ownerOf(_tokenId) == _from);</span><br><span class="line">    ownedTokensCount[_from] = ownedTokensCount[_from].sub(<span class="number">1</span>);</span><br><span class="line">    tokenOwner[_tokenId] = address(<span class="number">0</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 是否是安全转移</span></span><br><span class="line">  <span class="comment">// 能够接收ERC721代币的合约必须实现`onERC721Received`方法</span></span><br><span class="line">  <span class="comment">// 通过判断是否存在该方法查看是否安全转移</span></span><br><span class="line">  <span class="function"><span class="keyword">function</span> <span class="title">checkAndCallSafeTransfer</span>(<span class="params"></span></span></span><br><span class="line"><span class="function"><span class="params">    address _from,</span></span></span><br><span class="line"><span class="function"><span class="params">    address _to,</span></span></span><br><span class="line"><span class="function"><span class="params">    uint256 _tokenId,</span></span></span><br><span class="line"><span class="function"><span class="params">    bytes _data</span></span></span><br><span class="line"><span class="function"><span class="params">  </span>)</span></span><br><span class="line"><span class="function">    <span class="title">internal</span></span></span><br><span class="line"><span class="function">    <span class="title">returns</span> (<span class="params">bool</span>)</span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!_to.isContract()) &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    bytes4 retval = ERC721Receiver(_to).onERC721Received(_from, _tokenId, _data);</span><br><span class="line">    <span class="keyword">return</span> (retval == ERC721_RECEIVED);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="0x05-附录"><a href="#0x05-附录" class="headerlink" title="0x05 附录"></a>0x05 附录</h2><h3 id="A-修饰符"><a href="#A-修饰符" class="headerlink" title="A. 修饰符"></a>A. 修饰符</h3><p>在<code>Solidity</code>编程中，有一个概念叫做修饰符，英文是<code>modify</code> ，当为一个方法添加了某个修饰符时，也就意味着这个方法必须满足这个修饰符所要求的事情，比如<code>external</code> 关键词是要求该方法仅允许外部合约访问。</p>
+<p>下面列出一些上面提到的修饰符：</p>
+<p><strong>external</strong> 仅允许外部合约调用该方法</p>
+<p><strong>payable</strong> 仅标记了该关键词的方法能够接收转账操作</p>
+<h4 id="B-引用"><a href="#B-引用" class="headerlink" title="B. 引用"></a>B. 引用</h4><p><strong>ERC721草案</strong></p>
+<p><a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md" target="_blank" rel="noopener">https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md</a></p>
+<p><strong>OpenZeppelin对于ERC721完整实现</strong> </p>
+<p><a href="https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/contracts/token/ERC721/" target="_blank" rel="noopener">https://github.com/OpenZeppelin/zeppelin-solidity/blob/master/contracts/token/ERC721/</a></p>
+<blockquote>
+<p>如果喜欢，别说话，扫我~</p>
+</blockquote>
+<p>·12·12</p>
+<blockquote>
+<p>如果喜欢，别说话，扫我~</p>
+</blockquote>
+<p><a href="https://postimg.org/image/h5jzg3m0t/" target="_blank" rel="noopener"><img src="https://s14.postimg.org/788yn1ef5/qrcode_for_gh_0f12fe5ef5fd_258.jpg" alt="qrcode_for_gh_0f12fe5ef5fd_258.jpg"></a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ethereum/" rel="tag"># ethereum</a>
+          
+            <a href="/tags/solidity/" rel="tag"># solidity</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/26/ethereum-erc-20/" rel="next" title="以太坊标准代币系列之同质化代币ERC20">
+                <i class="fa fa-chevron-left"></i> 以太坊标准代币系列之同质化代币ERC20
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+    <div class="comments" id="comments">
+      <div class="ds-thread" data-thread-key="2018/03/31/erc-721/"
+           data-title="以太坊令牌系列之非同质化令牌ERC721" data-url="http://yoursite.com/2018/03/31/erc-721/">
+      </div>
+    </div>
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="http://7xkyde.com1.z0.glb.clouddn.com/img.png"
+                alt="我才是二亮" />
+            
+              <p class="site-author-name" itemprop="name">我才是二亮</p>
+              <p class="site-description motion-element" itemprop="description">一个半条腿迈入区块链世界的男人，立志在区块链领域做出一些伟大的事情。</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="http://weibo.com/unstring" target="_blank" title="微博">
+                    
+                      <i class="fa fa-fw fa-globe"></i>微博</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://www.douban.com/people/102437430/" target="_blank" title="豆瓣">
+                    
+                      <i class="fa fa-fw fa-globe"></i>豆瓣</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/2liang" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-globe"></i>GitHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#0x00-写在前面"><span class="nav-number">1.</span> <span class="nav-text">0x00 写在前面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x01-ERC721标准制定动机"><span class="nav-number">2.</span> <span class="nav-text">0x01 ERC721标准制定动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02-ERC721标准规范"><span class="nav-number">3.</span> <span class="nav-text">0x02 ERC721标准规范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A-方法-Method"><span class="nav-number">3.1.</span> <span class="nav-text">A. 方法 Method</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、balanceOf-获取余额"><span class="nav-number">3.1.1.</span> <span class="nav-text">1、balanceOf() 获取余额</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#函数原型"><span class="nav-number">3.1.1.1.</span> <span class="nav-text">函数原型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、ownerOf-获取token的所有者"><span class="nav-number">3.1.2.</span> <span class="nav-text">2、ownerOf() 获取token的所有者</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#函数原型-1"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">函数原型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、transferFrom-转移代币"><span class="nav-number">3.1.3.</span> <span class="nav-text">3、transferFrom() 转移代币</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#函数原型-2"><span class="nav-number">3.1.3.1.</span> <span class="nav-text">函数原型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4、safeTransferFrom-安全转移代币"><span class="nav-number">3.1.4.</span> <span class="nav-text">4、safeTransferFrom() 安全转移代币</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#函数原型-3"><span class="nav-number">3.1.4.1.</span> <span class="nav-text">函数原型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5、approve-授权代币操作权"><span class="nav-number">3.1.5.</span> <span class="nav-text">5、approve() 授权代币操作权</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#函数原型-4"><span class="nav-number">3.1.5.1.</span> <span class="nav-text">函数原型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6、setApprovalForAll-设置代币操作权"><span class="nav-number">3.1.6.</span> <span class="nav-text">6、setApprovalForAll() 设置代币操作权</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#函数原型-5"><span class="nav-number">3.1.6.1.</span> <span class="nav-text">函数原型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7、getApproved-获取被批准者"><span class="nav-number">3.1.7.</span> <span class="nav-text">7、getApproved() 获取被批准者</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#函数原型-6"><span class="nav-number">3.1.7.1.</span> <span class="nav-text">函数原型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#8、isApprovedForAll-是否被授权"><span class="nav-number">3.1.8.</span> <span class="nav-text">8、isApprovedForAll() 是否被授权</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#函数原型-7"><span class="nav-number">3.1.8.1.</span> <span class="nav-text">函数原型</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-事件-Event"><span class="nav-number">3.2.</span> <span class="nav-text">B. 事件 Event</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1、Transfer-转移事件"><span class="nav-number">3.2.1.</span> <span class="nav-text">1、Transfer() 转移事件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#事件原型"><span class="nav-number">3.2.1.1.</span> <span class="nav-text">事件原型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2、Approval-授权事件"><span class="nav-number">3.2.2.</span> <span class="nav-text">2、Approval() 授权事件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#事件原型-1"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">事件原型</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3、ApprovalForAll-授权所有代币事件"><span class="nav-number">3.2.3.</span> <span class="nav-text">3、ApprovalForAll() 授权所有代币事件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#事件原型-2"><span class="nav-number">3.2.3.1.</span> <span class="nav-text">事件原型</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x03-ERC721标准接口"><span class="nav-number">4.</span> <span class="nav-text">0x03 ERC721标准接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x04-代码示例"><span class="nav-number">5.</span> <span class="nav-text">0x04 代码示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x05-附录"><span class="nav-number">6.</span> <span class="nav-text">0x05 附录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A-修饰符"><span class="nav-number">6.1.</span> <span class="nav-text">A. 修饰符</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#B-引用"><span class="nav-number">6.1.1.</span> <span class="nav-text">B. 引用</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">我才是二亮</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"2liang"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("GUmazrXSU5LNyVXhXXlliccO-gzGzoHsz", "mo9dVl6hs73TalGEYwoLzeQM");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
